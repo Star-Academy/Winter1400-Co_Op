@@ -6,8 +6,20 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class FileReader {
-    HashMap<String, HashSet<Integer>> indexes = new HashMap<>();
-    public void readDataFromFile(File fileToRead){
+
+    private HashMap<String, HashSet<Integer>> indexes = new HashMap<>();
+    private static FileReader instance = null;
+    private FileReader(){}
+
+    public static FileReader getInstance(){
+        if (instance == null){
+            instance = new FileReader();
+        }
+        return instance;
+    }
+
+    private void readDataFromFile(File fileToRead){
+
         String data;
         try {
             data = new String(Files.readAllBytes(Path.of(fileToRead.getAbsolutePath())));
@@ -19,18 +31,15 @@ public class FileReader {
         } catch (IOException e) {
             System.out.println("File doesn't exist!");
         }
-
     }
-    public void fillIndexes() {
+
+    public  HashMap<String, HashSet<Integer>> fillIndexes() {
         File file = new File("files");
         File[] files = file.listFiles();
         assert files != null;
         for (File fileToRead : files) {
             readDataFromFile(fileToRead);
         }
+        return indexes;
     }
-    public HashSet<Integer> getIndex(String word){
-        return indexes.get(word);
-    }
-
 }
