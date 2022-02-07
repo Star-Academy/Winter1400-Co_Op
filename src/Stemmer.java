@@ -55,16 +55,14 @@ class Stemmer {
         };
     }
 
-   /* m() measures the number of consonant sequences between 0 and j. if c is
-      a consonant sequence and v a vowel sequence, and <..> indicates arbitrary
-      presence,
-
-         <c><v>       gives 0
-         <c>vc<v>     gives 1
-         <c>vcvc<v>   gives 2
-         <c>vcvcvc<v> gives 3
-         ....
-   */
+    /** Consonant class measures the number of consonant sequences between 0 and beginningIterator. if c is
+       a consonant sequence and v a vowel sequence, and <..> indicates arbitrary
+       presence, for example:
+          <c><v>       gives 0
+          <c>vc<v>     gives 1
+          <c>vcvc<v>   gives 2
+          ....
+    */
     class Consonant{
         int i = 0;
        public boolean checkConsonantForI(boolean doesCheckIsConsonant){
@@ -88,7 +86,7 @@ class Stemmer {
     }
 
 
-    /* from0ToJAreVowels() is true <=> 0,...j contains a vowel */
+    /** from0ToJAreVowels() is true <=> 0,...beginningIterator contains a vowel */
 
     private boolean from0ToJAreVowels() {
         for (int i = 0; i <= beginningIterator; i++){
@@ -97,7 +95,7 @@ class Stemmer {
         return false;
     }
 
-    /* checkDoubleConsonantSequence(j) is true <=> j,(j-1) contain a double consonant. */
+    /** checkDoubleConsonantSequence(beginningIterator) is true <=> beginningIterator,(beginningIterator-1) contain a double consonant. */
     private boolean areTwoLettersEqual(int index){
         return chars[index] != chars[index-1];
     }
@@ -106,7 +104,7 @@ class Stemmer {
         return isConsonant(index);
     }
 
-   /* checkConsonantVowelConsonantSequence(i) is true <=> i-2,i-1,i has the form consonant - vowel - consonant
+   /** checkConsonantVowelConsonantSequence(i) is true <=> i-2,i-1,i has the form consonant - vowel - consonant
       and also if the second c is not w,x or y. this is used when trying to
       restore an e at the end of a short word. e.g.
 
@@ -132,12 +130,12 @@ class Stemmer {
         for (int i = 0; i < stringLength; i++)
             if (chars[o + i] != string.charAt(i))
                 return false;
-        beginningIterator = endingIterator -stringLength;
+        beginningIterator = endingIterator - stringLength;
         return true;
     }
 
-   /* adjustCharacterFromString(string) sets (j+1),...k to the characters in the string s, readjusting
-      k. */
+   /** adjustCharacterFromString(string) sets (beginningIterator + 1),...,endingIterator to
+    * the characters in the string s, readjusting endingIterator. */
 
     private void adjustCharacterFromString(String string) {
         int l = string.length();
@@ -146,14 +144,14 @@ class Stemmer {
         endingIterator = beginningIterator + l;
     }
 
-    /* r(s) is used further down. */
+    /** callAdjust(s) is used further down. */
 
     private void callAdjust(String s) {
         if (new Consonant().returnNumberOfConsonantSequences() > 0)
             adjustCharacterFromString(s);
     }
 
-   /* changePlurals() gets rid of plurals and -ed or -ing. e.g.
+   /** changePlurals() gets rid of plurals and -ed or -ing. e.g.
 
           caresses  ->  caress
           ponies    ->  poni
@@ -206,15 +204,13 @@ class Stemmer {
         else changePluralsEndWithEdAndIng();
     }
 
-    /* step2() turns terminal y to i when there is another vowel in the stem. */
+    /** turnYToI() turns terminal y to i when there is another vowel in the stem. */
 
     private void turnYToI() {
         if (ends("y") && from0ToJAreVowels()) chars[endingIterator] = 'i';
     }
 
-   /* changeDoubleSuffix() maps double suffices to single ones. so -ization ( = -ize plus
-      -ation) maps to -ize etc. note that the string before the suffix must give
-      m() > 0. */
+
     private void doubleSuffixesFirstStep(char ch){
         switch (ch){
             case 'a'-> {if (ends("ational")) { callAdjust("ate"); break; }
@@ -256,6 +252,9 @@ class Stemmer {
             case 'g' -> {if (ends("logi")) callAdjust("log");}
         }
     }
+    /** changeDoubleSuffix() maps double suffices to single ones. so -ization ( = -ize plus
+     -ation) maps to -ize etc. note that the string before the suffix must give
+     Consonant class output > 0. */
     private void changeDoubleSuffix() {
         if (endingIterator == 0) return;
         doubleSuffixesFirstStep(chars[endingIterator -1]);
@@ -263,7 +262,7 @@ class Stemmer {
         doubleSuffixesThirdStep(chars[endingIterator -1]);
     }
 
-    /* changeSuffixFinish() deals with -ic-, -full, -ness etc. similar strategy to step3. */
+    /** changeSuffixFinish() deals with -ic-, -full, -ness etc. similar strategy to step3. */
 
     private void changeICAndFullSuffix() {
         switch (chars[endingIterator]) {
@@ -280,7 +279,6 @@ class Stemmer {
     }
 
 
-    /* step5() takes off -ant, -ence etc., in context <c>vcvc<v>. */
 
     private boolean changeSuffixFinishFirstStep(char ch){
         switch (ch) {
@@ -344,6 +342,7 @@ class Stemmer {
             }
         }
     }
+    /** changeSuffixFinish() takes off -ant, -ence etc., in context <c>vcvc<v>. */
     private void changeSuffixFinish() {
         if (endingIterator == 0) return;
         char ch = chars[endingIterator -1];
@@ -352,8 +351,7 @@ class Stemmer {
         if (b && (new Consonant().returnNumberOfConsonantSequences() > 1)) endingIterator = beginningIterator;
     }
 
-    /* step6() removes a final -e if m() > 1. */
-
+    /** removeFinalE() removes a final -e if Consonant class output > 1. */
     private void removeFinalE() {
         beginningIterator = endingIterator;
         if (chars[endingIterator] == 'e') {
@@ -384,6 +382,7 @@ class Stemmer {
     }
 
 
+    /** stemWord gets a string and stems it to the output */
     public String stemWord(String string)
     {
         string = string.toLowerCase();
