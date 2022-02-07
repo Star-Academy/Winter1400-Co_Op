@@ -15,7 +15,7 @@
 
 class Stemmer {
     private char[] chars;
-    private int beginningIndex, endingIndex, beginningIterator, endingItrator;
+    private int beginningIndex, endingIndex, beginningIterator, endingIterator;
     public Stemmer() {
         chars = new char[50];
         beginningIndex = 0;
@@ -44,17 +44,6 @@ class Stemmer {
      */
     public String toString() { return new String(chars,0, endingIndex); }
 
-    /**
-     * Returns the length of the word resulting from the stemming process.
-     */
-    public int getResultLength() { return endingIndex; }
-
-    /**
-     * Returns a reference to a character buffer containing the results of
-     * the stemming process.  You also need to consult getResultLength()
-     * to determine the length of the result.
-     */
-    public char[] getResultBuffer() { return chars; }
 
 
     private boolean isConsonant(int index)
@@ -76,29 +65,28 @@ class Stemmer {
          <c>vcvcvc<v> gives 3
          ....
    */
-    private int checkConsonantForI(int i, int n, boolean doesCheckIsConsonant){
-        while(true) {
-            if (i > beginningIterator) return n;
-            if(doesCheckIsConsonant){
-                if (isConsonant(i)) break;
-            } else {
-                if (!isConsonant(i)) break;
-            }
-            i++;
-        }
-        i++;
-        return i;
-    }
-    private int returnNumberOfConsonantSequences() {
-        int n = 0;
+    class Consonant{
         int i = 0;
-        i = checkConsonantForI(i, n, false);
-        while(true) {
-            i = checkConsonantForI(i, n, true);
-            n++;
-            i = checkConsonantForI(i, n, false);
-        }
+       public boolean checkConsonantForI(boolean doesCheckIsConsonant){
+           while(true) {
+               if (i > beginningIterator) return true;
+               if (doesCheckIsConsonant == isConsonant(i)) break;
+               i++;
+           }
+           i++;
+           return false;
+       }
+       public int returnNumberOfConsonantSequences() {
+           int n = 0;
+           if (checkConsonantForI(false)) return n;
+           while(true) {
+               if (checkConsonantForI(true)) return n;
+               n++;
+               if (checkConsonantForI(false)) return n;
+           }
+       }
     }
+
 
     /* from0ToJAreVowels() is true <=> 0,...j contains a vowel */
 
@@ -110,10 +98,11 @@ class Stemmer {
     }
 
     /* checkDoubleConsonantSequence(j) is true <=> j,(j-1) contain a double consonant. */
-
+    private boolean areTwoLettersEqual(int index){
+        return chars[index] != chars[index-1];
+    }
     private boolean checkDoubleConsonantSequence(int index) {
-        if (index < 1) return false;
-        if (chars[index] != chars[index-1]) return false;
+        if (index < 1 || areTwoLettersEqual(index)) return false;
         return isConsonant(index);
     }
 
@@ -125,22 +114,25 @@ class Stemmer {
          snow, box, tray.
 
    */
+    private boolean isSequenceWXY(int index){
+        int character = chars[index];
+        return character != 'w' && character != 'x' && character != 'y';
+    }
 
     private boolean checkConsonantVowelConsonantSequence(int index) {
         if (index < 2 || !isConsonant(index) || isConsonant(index-1) || !isConsonant(index-2)) return false;
-        int character = chars[index];
-        return character != 'w' && character != 'x' && character != 'y';
+        return isSequenceWXY(index);
 
     }
 
     private boolean ends(String string) {
         int stringLength = string.length();
-        int o = endingItrator - stringLength + 1;
+        int o = endingIterator - stringLength + 1;
         if (o < 0) return false;
         for (int i = 0; i < stringLength; i++)
             if (chars[o + i] != string.charAt(i))
                 return false;
-        beginningIterator = endingItrator -stringLength;
+        beginningIterator = endingIterator -stringLength;
         return true;
     }
 
@@ -151,13 +143,13 @@ class Stemmer {
         int l = string.length();
         for (int i = 0; i < l; i++)
             chars[i + beginningIterator + 1] = string.charAt(i);
-        endingItrator = beginningIterator + l;
+        endingIterator = beginningIterator + l;
     }
 
     /* r(s) is used further down. */
 
     private void callAdjust(String s) {
-        if (returnNumberOfConsonantSequences() > 0)
+        if (new Consonant().returnNumberOfConsonantSequences() > 0)
             adjustCharacterFromString(s);
     }
 
@@ -184,28 +176,32 @@ class Stemmer {
    */
     private void changePluralsEndWithEdAndIng(){
         if ((ends("ed") || ends("ing")) && from0ToJAreVowels()) {
-            endingItrator = beginningIterator;
-            if (ends("at")) adjustCharacterFromString("ate");
-            else if (ends("bl")) adjustCharacterFromString("ble");
-            else if (ends("iz")) adjustCharacterFromString("ize");
-            else if (checkDoubleConsonantSequence(endingItrator)) {
-                endingItrator--;
-                int ch = chars[endingItrator];
-                if (ch == 'l' || ch == 's' || ch == 'z') endingItrator++;
+            endingIterator = beginningIterator;
+            String[] strings = {"at", "bl", "iz"};
+            for (String string : strings) {
+                if (ends(string)){
+                    adjustCharacterFromString(string + "e");
+                    return;
+                }
             }
-            else if (returnNumberOfConsonantSequences() == 1
-                    && checkConsonantVowelConsonantSequence(endingItrator)) adjustCharacterFromString("e");
+            if (checkDoubleConsonantSequence(endingIterator)) {
+                endingIterator--;
+                int ch = chars[endingIterator];
+                if (ch == 'l' || ch == 's' || ch == 'z') endingIterator++;
+            }
+            else if (new Consonant().returnNumberOfConsonantSequences() == 1
+                    && checkConsonantVowelConsonantSequence(endingIterator)) adjustCharacterFromString("e");
         }
     }
 
     private void changePlurals() {
-        if (chars[endingItrator] == 's') {
-            if (ends("sses")) endingItrator -= 2;
+        if (chars[endingIterator] == 's') {
+            if (ends("sses")) endingIterator -= 2;
             else if (ends("ies")) adjustCharacterFromString("i");
-            else if (chars[endingItrator -1] != 's') endingItrator--;
+            else if (chars[endingIterator -1] != 's') endingIterator--;
         }
         if (ends("eed")) {
-            if (returnNumberOfConsonantSequences() > 0) endingItrator--;
+            if (new Consonant().returnNumberOfConsonantSequences() > 0) endingIterator--;
         }
         else changePluralsEndWithEdAndIng();
     }
@@ -213,7 +209,7 @@ class Stemmer {
     /* step2() turns terminal y to i when there is another vowel in the stem. */
 
     private void turnYToI() {
-        if (ends("y") && from0ToJAreVowels()) chars[endingItrator] = 'i';
+        if (ends("y") && from0ToJAreVowels()) chars[endingIterator] = 'i';
     }
 
    /* changeDoubleSuffix() maps double suffices to single ones. so -ization ( = -ize plus
@@ -261,16 +257,16 @@ class Stemmer {
         }
     }
     private void changeDoubleSuffix() {
-        if (endingItrator == 0) return;
-        doubleSuffixesFirstStep(chars[endingItrator -1]);
-        doubleSuffixesSecondStep(chars[endingItrator -1]);
-        doubleSuffixesThirdStep(chars[endingItrator -1]);
+        if (endingIterator == 0) return;
+        doubleSuffixesFirstStep(chars[endingIterator -1]);
+        doubleSuffixesSecondStep(chars[endingIterator -1]);
+        doubleSuffixesThirdStep(chars[endingIterator -1]);
     }
 
     /* changeSuffixFinish() deals with -ic-, -full, -ness etc. similar strategy to step3. */
 
     private void changeICAndFullSuffix() {
-        switch (chars[endingItrator]) {
+        switch (chars[endingIterator]) {
             case 'e' -> {if (ends("icate")) { callAdjust("ic"); break; }
                 if (ends("ative")) { callAdjust(""); break; }
                 if (ends("alize")) callAdjust("al");
@@ -283,26 +279,22 @@ class Stemmer {
         }
     }
 
+
     /* step5() takes off -ant, -ence etc., in context <c>vcvc<v>. */
 
     private boolean changeSuffixFinishFirstStep(char ch){
         switch (ch) {
             case 'a' -> {
-                ends("al");
-                return true;
+                return ends("al");
             }
             case 'c' -> {
-                if (ends("ance")) break;
-                ends("ence");
-                return true;
+                return ends("ance") || ends("ence");
             }
             case 'e' -> {
-                ends("er");
-                return true;
+                return ends("er");
             }
             case 'i' -> {
-                ends("ic");
-                return true;
+                return ends("ic");
             }
 
         }
@@ -311,16 +303,10 @@ class Stemmer {
     private boolean changeSuffixFinishSecondStep(char ch){
         switch (ch){
             case 'l' -> {
-                if (ends("able")) break;
-                ends("ible");
-                return true;
+                return ends("able") || ends("ible");
             }
             case 'n' -> {
-                if (ends("ant")) break;
-                if (ends("ement")) break;
-                if (ends("ment")) break;
-                ends("ent");
-                return true;
+                return ends("ant") || ends("ement") || ends("ment") || ends("ent");
             }
         }
         return false;
@@ -328,20 +314,15 @@ class Stemmer {
     private boolean changeSuffixFinishThirdStep(char ch){
         switch (ch){
             case 'o' -> {
-                if (ends("ion") && beginningIterator >= 0
-                        && (chars[beginningIterator] == 's' || chars[beginningIterator] == 't')) break;
-                if (ends("ou")) break;
-                return true;
+                return (ends("ion") && beginningIterator >= 0
+                        && (chars[beginningIterator] == 's' || chars[beginningIterator] == 't')) || ends("ou");
             }
             /* takes care of -ous */
             case 's' -> {
-                if (ends("ism")) break;
-                return true;
+                return ends("ism");
             }
             case 't' -> {
-                if (ends("ate")) break;
-                if (ends("iti")) break;
-                return true;
+                return ends("ate") || ends("iti");
             }
 
         }
@@ -350,41 +331,37 @@ class Stemmer {
     private boolean changeSuffixFinishFourthStep(char ch){
         switch (ch) {
             case 'u' -> {
-                if (ends("ous")) break;
-                return true;
+                return ends("ous");
             }
             case 'v' -> {
-                if (ends("ive")) break;
-                return true;
+                return ends("ive");
             }
             case 'z' -> {
-                if (ends("ize")) break;
-                return true;
+                return ends("ize");
             }
             default -> {
-                return true;
+                return false;
             }
         }
-        return false;
     }
     private void changeSuffixFinish() {
-        if (endingItrator == 0) return;
-        char ch = chars[endingItrator -1];
-        boolean b = changeSuffixFinishFirstStep(ch) && changeSuffixFinishSecondStep(ch)
-                && changeSuffixFinishThirdStep(ch) && changeSuffixFinishFourthStep(ch);
-        if (!b && (returnNumberOfConsonantSequences() > 1)) endingItrator = beginningIterator;
+        if (endingIterator == 0) return;
+        char ch = chars[endingIterator -1];
+        boolean b = changeSuffixFinishFirstStep(ch) || changeSuffixFinishSecondStep(ch)
+                || changeSuffixFinishThirdStep(ch) || changeSuffixFinishFourthStep(ch);
+        if (b && (new Consonant().returnNumberOfConsonantSequences() > 1)) endingIterator = beginningIterator;
     }
 
     /* step6() removes a final -e if m() > 1. */
 
     private void removeFinalE() {
-        beginningIterator = endingItrator;
-        if (chars[endingItrator] == 'e') {
-            int a = returnNumberOfConsonantSequences();
-            if (a > 1 || a == 1 && !checkConsonantVowelConsonantSequence(endingItrator -1)) endingItrator--;
+        beginningIterator = endingIterator;
+        if (chars[endingIterator] == 'e') {
+            int a = new Consonant().returnNumberOfConsonantSequences();
+            if (a > 1 || a == 1 && !checkConsonantVowelConsonantSequence(endingIterator -1)) endingIterator--;
         }
-        if (chars[endingItrator] == 'l' && checkDoubleConsonantSequence(endingItrator)
-                && returnNumberOfConsonantSequences() > 1) endingItrator--;
+        if (chars[endingIterator] == 'l' && checkDoubleConsonantSequence(endingIterator)
+                && new Consonant().returnNumberOfConsonantSequences() > 1) endingIterator--;
     }
 
     /** Stem the word placed into the Stemmer buffer through calls to add().
@@ -393,8 +370,8 @@ class Stemmer {
      * getResultLength()/getResultBuffer() or toString().
      */
     public void stem() {
-        endingItrator = beginningIndex - 1;
-        if (endingItrator > 1) {
+        endingIterator = beginningIndex - 1;
+        if (endingIterator > 1) {
             changePlurals();
             turnYToI();
             changeDoubleSuffix();
@@ -402,7 +379,7 @@ class Stemmer {
             changeSuffixFinish();
             removeFinalE();
         }
-        endingIndex = endingItrator + 1;
+        endingIndex = endingIterator + 1;
         beginningIndex = 0;
     }
 
