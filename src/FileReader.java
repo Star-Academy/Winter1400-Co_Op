@@ -8,13 +8,14 @@ import java.util.HashSet;
 public class FileReader {
     HashMap<String, HashSet<Integer>> indexes = new HashMap<>();
 
-    private void readDataFromFile(File fileToRead) {
+    private boolean readDataFromFile(File fileToRead) {
         String data;
         data = readContents(fileToRead);
         if (!isFileFound(data))
-            return;
+            return false;
         String[] words = processDocumentAndGiveWords(data);
         storeWords(words, fileToRead);
+        return true;
     }
 
     private boolean isFileFound(String data) {
@@ -24,20 +25,19 @@ public class FileReader {
     private String[] processDocumentAndGiveWords(String data) {
         DocumentProcessor documentProcessor = new DocumentProcessor(data);
         return documentProcessor.getNormalizedWords();
-
     }
 
     private void storeWords(String[] words, File file) {
         for (String word : words) {
-            indexes.computeIfAbsent(word, wordIndex -> new HashSet<>()).add(Integer.valueOf(file.getName()));
+            HashSet<Integer> fileIds = indexes.computeIfAbsent(word, wordIndex -> new HashSet<>());
+            fileIds.add(Integer.valueOf(file.getName()));
         }
     }
 
     private String readContents(File fileToRead) {
         try {
             return new String(Files.readAllBytes(Path.of(fileToRead.getAbsolutePath())));
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("File doesn't exist!");
             return null;
         }
@@ -47,21 +47,20 @@ public class FileReader {
     public void fillIndexes() {
         File[] files = importFiles();
         readFiles(files);
-
     }
 
     private void readFiles(File[] files) {
         for (File fileToRead : files) {
-            readDataFromFile(fileToRead);
+            if (!readDataFromFile(fileToRead))
+                System.out.println("couldn't read data");
         }
     }
 
     private File[] importFiles() {
-        File file = new File("files");
+        String pathName = "files";
+        File file = new File(pathName);
         File[] files = file.listFiles();
-        assert files != null;
         return files;
-
     }
 
     public HashSet<Integer> getIndex(String word) {
