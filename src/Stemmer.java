@@ -13,17 +13,13 @@
  * by calling one of the various stem(something) methods.
  */
 
-class Stemmer
-{  private char[] b;
-    private int i,     /* offset into b */
-            i_end, /* offset to end of stemmed word */
-            j, k;
-    private static final int INC = 50;
-    /* unit of size whereby b is increased */
-    public Stemmer()
-    {  b = new char[INC];
-        i = 0;
-        i_end = 0;
+class Stemmer {
+    private char[] chars;
+    private int beginningIndex, endingIndex, beginningIterator, endingItrator;
+    public Stemmer() {
+        chars = new char[50];
+        beginningIndex = 0;
+        endingIndex = 0;
     }
 
     /**
@@ -31,56 +27,41 @@ class Stemmer
      * adding characters, you can call stem(void) to stem the word.
      */
 
-    public void add(char ch)
-    {  if (i == b.length)
-    {  char[] new_b = new char[i+INC];
-        System.arraycopy(b, 0, new_b, 0, i);
-        b = new_b;
-    }
-        b[i++] = ch;
+    public void add(char character) {
+        if (beginningIndex == chars.length) {
+            char[] newChars = new char[beginningIndex + 50];
+            System.arraycopy(chars, 0, newChars, 0, beginningIndex);
+            chars = newChars;
+        }
+        chars[beginningIndex++] = character;
     }
 
-
-    /** Adds wLen characters to the word being stemmed contained in a portion
-     * of a char[] array. This is like repeated calls of add(char ch), but
-     * faster.
-     */
-
-    public void add(char[] w, int wLen)
-    {  if (i+wLen >= b.length)
-    {  char[] new_b = new char[i+wLen+INC];
-        if (i >= 0) System.arraycopy(b, 0, new_b, 0, i);
-        b = new_b;
-    }
-        for (int c = 0; c < wLen; c++) b[i++] = w[c];
-    }
 
     /**
      * After a word has been stemmed, it can be retrieved by toString(),
      * or a reference to the internal buffer can be retrieved by getResultBuffer
      * and getResultLength (which is generally more efficient.)
      */
-    public String toString() { return new String(b,0,i_end); }
+    public String toString() { return new String(chars,0, endingIndex); }
 
     /**
      * Returns the length of the word resulting from the stemming process.
      */
-    public int getResultLength() { return i_end; }
+    public int getResultLength() { return endingIndex; }
 
     /**
      * Returns a reference to a character buffer containing the results of
      * the stemming process.  You also need to consult getResultLength()
      * to determine the length of the result.
      */
-    public char[] getResultBuffer() { return b; }
+    public char[] getResultBuffer() { return chars; }
 
-    /* cons(i) is true <=> b[i] is a consonant. */
 
-    private boolean cons(int i)
+    private boolean isConsonant(int index)
     {
-        return switch (b[i]) {
+        return switch (chars[index]) {
             case 'a', 'e', 'i', 'o', 'u' -> false;
-            case 'y' -> i == 0 || !cons(i - 1);
+            case 'y' -> index == 0 || !isConsonant(index - 1);
             default -> true;
         };
     }
@@ -95,48 +76,48 @@ class Stemmer
          <c>vcvcvc<v> gives 3
          ....
    */
-
-    private int m()
-    {  int n = 0;
-        int i = 0;
-        while(true)
-        {  if (i > j) return n;
-            if (! cons(i)) break; i++;
-        }
-        i++;
-        while(true)
-        {  while(true)
-        {  if (i > j) return n;
-            if (cons(i)) break;
-            i++;
-        }
-            i++;
-            n++;
-            while(true)
-            {  if (i > j) return n;
-                if (! cons(i)) break;
-                i++;
+    private int checkConsonantForI(int i, int n, boolean doesCheckIsConsonant){
+        while(true) {
+            if (i > beginningIterator) return n;
+            if(doesCheckIsConsonant){
+                if (isConsonant(i)) break;
+            } else {
+                if (!isConsonant(i)) break;
             }
             i++;
         }
+        i++;
+        return i;
+    }
+    private int returnNumberOfConsonantSequences() {
+        int n = 0;
+        int i = 0;
+        i = checkConsonantForI(i, n, false);
+        while(true) {
+            i = checkConsonantForI(i, n, true);
+            n++;
+            i = checkConsonantForI(i, n, false);
+        }
     }
 
-    /* vowelinstem() is true <=> 0,...j contains a vowel */
+    /* from0ToJAreVowels() is true <=> 0,...j contains a vowel */
 
-    private boolean vowelinstem()
-    {  int i; for (i = 0; i <= j; i++) if (! cons(i)) return true;
+    private boolean from0ToJAreVowels() {
+        for (int i = 0; i <= beginningIterator; i++){
+            if (! isConsonant(i)) return true;
+        }
         return false;
     }
 
-    /* doublec(j) is true <=> j,(j-1) contain a double consonant. */
+    /* checkDoubleConsonantSequence(j) is true <=> j,(j-1) contain a double consonant. */
 
-    private boolean doublec(int j)
-    {  if (j < 1) return false;
-        if (b[j] != b[j-1]) return false;
-        return cons(j);
+    private boolean checkDoubleConsonantSequence(int index) {
+        if (index < 1) return false;
+        if (chars[index] != chars[index-1]) return false;
+        return isConsonant(index);
     }
 
-   /* cvc(i) is true <=> i-2,i-1,i has the form consonant - vowel - consonant
+   /* checkConsonantVowelConsonantSequence(i) is true <=> i-2,i-1,i has the form consonant - vowel - consonant
       and also if the second c is not w,x or y. this is used when trying to
       restore an e at the end of a short word. e.g.
 
@@ -145,37 +126,42 @@ class Stemmer
 
    */
 
-    private boolean cvc(int i)
-    {  if (i < 2 || !cons(i) || cons(i-1) || !cons(i-2)) return false;
-        {  int ch = b[i];
-            return ch != 'w' && ch != 'x' && ch != 'y';
-        }
+    private boolean checkConsonantVowelConsonantSequence(int index) {
+        if (index < 2 || !isConsonant(index) || isConsonant(index-1) || !isConsonant(index-2)) return false;
+        int character = chars[index];
+        return character != 'w' && character != 'x' && character != 'y';
+
     }
 
-    private boolean ends(String s)
-    {  int l = s.length();
-        int o = k-l+1;
+    private boolean ends(String string) {
+        int stringLength = string.length();
+        int o = endingItrator - stringLength + 1;
         if (o < 0) return false;
-        for (int i = 0; i < l; i++) if (b[o+i] != s.charAt(i)) return false;
-        j = k-l;
+        for (int i = 0; i < stringLength; i++)
+            if (chars[o + i] != string.charAt(i))
+                return false;
+        beginningIterator = endingItrator -stringLength;
         return true;
     }
 
-   /* setto(s) sets (j+1),...k to the characters in the string s, readjusting
+   /* adjustCharacterFromString(string) sets (j+1),...k to the characters in the string s, readjusting
       k. */
 
-    private void setto(String s)
-    {  int l = s.length();
-        int o = j+1;
-        for (int i = 0; i < l; i++) b[o+i] = s.charAt(i);
-        k = j+l;
+    private void adjustCharacterFromString(String string) {
+        int l = string.length();
+        for (int i = 0; i < l; i++)
+            chars[i + beginningIterator + 1] = string.charAt(i);
+        endingItrator = beginningIterator + l;
     }
 
     /* r(s) is used further down. */
 
-    private void r(String s) { if (m() > 0) setto(s); }
+    private void callAdjust(String s) {
+        if (returnNumberOfConsonantSequences() > 0)
+            adjustCharacterFromString(s);
+    }
 
-   /* step1() gets rid of plurals and -ed or -ing. e.g.
+   /* changePlurals() gets rid of plurals and -ed or -ing. e.g.
 
           caresses  ->  caress
           ponies    ->  poni
@@ -196,126 +182,209 @@ class Stemmer
           meetings  ->  meet
 
    */
-
-    private void step1()
-    {  if (b[k] == 's')
-    {  if (ends("sses")) k -= 2; else
-    if (ends("ies")) setto("i"); else
-    if (b[k-1] != 's') k--;
-    }
-        if (ends("eed")) { if (m() > 0) k--; } else
-        if ((ends("ed") || ends("ing")) && vowelinstem())
-        {  k = j;
-            if (ends("at")) setto("ate"); else
-            if (ends("bl")) setto("ble"); else
-            if (ends("iz")) setto("ize"); else
-            if (doublec(k))
-            {  k--;
-                {  int ch = b[k];
-                    if (ch == 'l' || ch == 's' || ch == 'z') k++;
-                }
+    private void changePluralsEndWithEdAndIng(){
+        if ((ends("ed") || ends("ing")) && from0ToJAreVowels()) {
+            endingItrator = beginningIterator;
+            if (ends("at")) adjustCharacterFromString("ate");
+            else if (ends("bl")) adjustCharacterFromString("ble");
+            else if (ends("iz")) adjustCharacterFromString("ize");
+            else if (checkDoubleConsonantSequence(endingItrator)) {
+                endingItrator--;
+                int ch = chars[endingItrator];
+                if (ch == 'l' || ch == 's' || ch == 'z') endingItrator++;
             }
-            else if (m() == 1 && cvc(k)) setto("e");
+            else if (returnNumberOfConsonantSequences() == 1
+                    && checkConsonantVowelConsonantSequence(endingItrator)) adjustCharacterFromString("e");
         }
+    }
+
+    private void changePlurals() {
+        if (chars[endingItrator] == 's') {
+            if (ends("sses")) endingItrator -= 2;
+            else if (ends("ies")) adjustCharacterFromString("i");
+            else if (chars[endingItrator -1] != 's') endingItrator--;
+        }
+        if (ends("eed")) {
+            if (returnNumberOfConsonantSequences() > 0) endingItrator--;
+        }
+        else changePluralsEndWithEdAndIng();
     }
 
     /* step2() turns terminal y to i when there is another vowel in the stem. */
 
-    private void step2() { if (ends("y") && vowelinstem()) b[k] = 'i'; }
+    private void turnYToI() {
+        if (ends("y") && from0ToJAreVowels()) chars[endingItrator] = 'i';
+    }
 
-   /* step3() maps double suffices to single ones. so -ization ( = -ize plus
+   /* changeDoubleSuffix() maps double suffices to single ones. so -ization ( = -ize plus
       -ation) maps to -ize etc. note that the string before the suffix must give
       m() > 0. */
+    private void doubleSuffixesFirstStep(char ch){
+        switch (ch){
+            case 'a'-> {if (ends("ational")) { callAdjust("ate"); break; }
+                if (ends("tional")) callAdjust("tion");
+            }
+            case 'c'-> {if (ends("enci")) { callAdjust("ence"); break; }
+                if (ends("anci")) callAdjust("ance");
+            }
+            case 'e' -> {if (ends("izer")) callAdjust("ize"); }
 
-    private void step3() { if (k == 0) return; /* For Bug 1 */ switch (b[k-1])
-    {
-        case 'a': if (ends("ational")) { r("ate"); break; }
-            if (ends("tional")) { r("tion"); break; }
-            break;
-        case 'c': if (ends("enci")) { r("ence"); break; }
-            if (ends("anci")) { r("ance"); break; }
-            break;
-        case 'e': if (ends("izer")) { r("ize"); break; }
-            break;
-        case 'l': if (ends("bli")) { r("ble"); break; }
-            if (ends("alli")) { r("al"); break; }
-            if (ends("entli")) { r("ent"); break; }
-            if (ends("eli")) { r("e"); break; }
-            if (ends("ousli")) { r("ous"); break; }
-            break;
-        case 'o': if (ends("ization")) { r("ize"); break; }
-            if (ends("ation")) { r("ate"); break; }
-            if (ends("ator")) { r("ate"); break; }
-            break;
-        case 's': if (ends("alism")) { r("al"); break; }
-            if (ends("iveness")) { r("ive"); break; }
-            if (ends("fulness")) { r("ful"); break; }
-            if (ends("ousness")) { r("ous"); break; }
-            break;
-        case 't': if (ends("aliti")) { r("al"); break; }
-            if (ends("iviti")) { r("ive"); break; }
-            if (ends("biliti")) { r("ble"); break; }
-            break;
-        case 'g': if (ends("logi")) { r("log"); break; }
-    } }
+        }
+    }
+    private void doubleSuffixesSecondStep(char ch){
+        switch (ch){
+            case 'l' -> {if (ends("bli")) { callAdjust("ble"); break; }
+                if (ends("alli")) { callAdjust("al"); break; }
+                if (ends("entli")) { callAdjust("ent"); break; }
+                if (ends("eli")) { callAdjust("e"); break; }
+                if (ends("ousli")) callAdjust("ous");
+            }
+            case 'o' -> {if (ends("ization")) { callAdjust("ize"); break; }
+                if (ends("ation")) { callAdjust("ate"); break; }
+                if (ends("ator")) callAdjust("ate");
+            }
 
-    /* step4() deals with -ic-, -full, -ness etc. similar strategy to step3. */
+        }
+    }
+    private void doubleSuffixesThirdStep(char ch){
+        switch (ch) {
+            case 's' -> {if (ends("alism")) { callAdjust("al"); break; }
+                if (ends("iveness")) { callAdjust("ive"); break; }
+                if (ends("fulness")) { callAdjust("ful"); break; }
+                if (ends("ousness")) callAdjust("ous");
+            }
+            case 't' -> {if (ends("aliti")) { callAdjust("al"); break; }
+                if (ends("iviti")) { callAdjust("ive"); break; }
+                if (ends("biliti")) callAdjust("ble");
+            }
+            case 'g' -> {if (ends("logi")) callAdjust("log");}
+        }
+    }
+    private void changeDoubleSuffix() {
+        if (endingItrator == 0) return;
+        doubleSuffixesFirstStep(chars[endingItrator -1]);
+        doubleSuffixesSecondStep(chars[endingItrator -1]);
+        doubleSuffixesThirdStep(chars[endingItrator -1]);
+    }
 
-    private void step4() { switch (b[k])
-    {
-        case 'e': if (ends("icate")) { r("ic"); break; }
-            if (ends("ative")) { r(""); break; }
-            if (ends("alize")) { r("al"); break; }
-            break;
-        case 'i': if (ends("iciti")) { r("ic"); break; }
-            break;
-        case 'l': if (ends("ical")) { r("ic"); break; }
-            if (ends("ful")) { r(""); break; }
-            break;
-        case 's': if (ends("ness")) { r(""); break; }
-            break;
-    } }
+    /* changeSuffixFinish() deals with -ic-, -full, -ness etc. similar strategy to step3. */
+
+    private void changeICAndFullSuffix() {
+        switch (chars[endingItrator]) {
+            case 'e' -> {if (ends("icate")) { callAdjust("ic"); break; }
+                if (ends("ative")) { callAdjust(""); break; }
+                if (ends("alize")) callAdjust("al");
+            }
+            case 'i' -> {if (ends("iciti")) callAdjust("ic"); }
+            case 'l' -> {if (ends("ical")) { callAdjust("ic"); break; }
+                if (ends("ful")) callAdjust("");
+            }
+            case 's' -> {if (ends("ness")) callAdjust(""); }
+        }
+    }
 
     /* step5() takes off -ant, -ence etc., in context <c>vcvc<v>. */
 
-    private void step5()
-    {   if (k == 0) return; /* for Bug 1 */ switch (b[k-1])
-    {  case 'a': if (ends("al")) break; return;
-        case 'c': if (ends("ance")) break;
-            if (ends("ence")) break; return;
-        case 'e': if (ends("er")) break; return;
-        case 'i': if (ends("ic")) break; return;
-        case 'l': if (ends("able")) break;
-            if (ends("ible")) break; return;
-        case 'n': if (ends("ant")) break;
-            if (ends("ement")) break;
-            if (ends("ment")) break;
-            /* element etc. not stripped before the m */
-            if (ends("ent")) break; return;
-        case 'o': if (ends("ion") && j >= 0 && (b[j] == 's' || b[j] == 't')) break;
-            /* j >= 0 fixes Bug 2 */
-            if (ends("ou")) break; return;
-        /* takes care of -ous */
-        case 's': if (ends("ism")) break; return;
-        case 't': if (ends("ate")) break;
-            if (ends("iti")) break; return;
-        case 'u': if (ends("ous")) break; return;
-        case 'v': if (ends("ive")) break; return;
-        case 'z': if (ends("ize")) break; return;
-        default: return;
+    private boolean changeSuffixFinishFirstStep(char ch){
+        switch (ch) {
+            case 'a' -> {
+                ends("al");
+                return true;
+            }
+            case 'c' -> {
+                if (ends("ance")) break;
+                ends("ence");
+                return true;
+            }
+            case 'e' -> {
+                ends("er");
+                return true;
+            }
+            case 'i' -> {
+                ends("ic");
+                return true;
+            }
+
+        }
+        return false;
     }
-        if (m() > 1) k = j;
+    private boolean changeSuffixFinishSecondStep(char ch){
+        switch (ch){
+            case 'l' -> {
+                if (ends("able")) break;
+                ends("ible");
+                return true;
+            }
+            case 'n' -> {
+                if (ends("ant")) break;
+                if (ends("ement")) break;
+                if (ends("ment")) break;
+                ends("ent");
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean changeSuffixFinishThirdStep(char ch){
+        switch (ch){
+            case 'o' -> {
+                if (ends("ion") && beginningIterator >= 0
+                        && (chars[beginningIterator] == 's' || chars[beginningIterator] == 't')) break;
+                if (ends("ou")) break;
+                return true;
+            }
+            /* takes care of -ous */
+            case 's' -> {
+                if (ends("ism")) break;
+                return true;
+            }
+            case 't' -> {
+                if (ends("ate")) break;
+                if (ends("iti")) break;
+                return true;
+            }
+
+        }
+        return false;
+    }
+    private boolean changeSuffixFinishFourthStep(char ch){
+        switch (ch) {
+            case 'u' -> {
+                if (ends("ous")) break;
+                return true;
+            }
+            case 'v' -> {
+                if (ends("ive")) break;
+                return true;
+            }
+            case 'z' -> {
+                if (ends("ize")) break;
+                return true;
+            }
+            default -> {
+                return true;
+            }
+        }
+        return false;
+    }
+    private void changeSuffixFinish() {
+        if (endingItrator == 0) return;
+        char ch = chars[endingItrator -1];
+        boolean b = changeSuffixFinishFirstStep(ch) && changeSuffixFinishSecondStep(ch)
+                && changeSuffixFinishThirdStep(ch) && changeSuffixFinishFourthStep(ch);
+        if (!b && (returnNumberOfConsonantSequences() > 1)) endingItrator = beginningIterator;
     }
 
     /* step6() removes a final -e if m() > 1. */
 
-    private void step6()
-    {  j = k;
-        if (b[k] == 'e')
-        {  int a = m();
-            if (a > 1 || a == 1 && !cvc(k-1)) k--;
+    private void removeFinalE() {
+        beginningIterator = endingItrator;
+        if (chars[endingItrator] == 'e') {
+            int a = returnNumberOfConsonantSequences();
+            if (a > 1 || a == 1 && !checkConsonantVowelConsonantSequence(endingItrator -1)) endingItrator--;
         }
-        if (b[k] == 'l' && doublec(k) && m() > 1) k--;
+        if (chars[endingItrator] == 'l' && checkDoubleConsonantSequence(endingItrator)
+                && returnNumberOfConsonantSequences() > 1) endingItrator--;
     }
 
     /** Stem the word placed into the Stemmer buffer through calls to add().
@@ -323,10 +392,18 @@ class Stemmer
      * from the input.  You can retrieve the result with
      * getResultLength()/getResultBuffer() or toString().
      */
-    public void stem()
-    {  k = i - 1;
-        if (k > 1) { step1(); step2(); step3(); step4(); step5(); step6(); }
-        i_end = k+1; i = 0;
+    public void stem() {
+        endingItrator = beginningIndex - 1;
+        if (endingItrator > 1) {
+            changePlurals();
+            turnYToI();
+            changeDoubleSuffix();
+            changeICAndFullSuffix();
+            changeSuffixFinish();
+            removeFinalE();
+        }
+        endingIndex = endingItrator + 1;
+        beginningIndex = 0;
     }
 
 
