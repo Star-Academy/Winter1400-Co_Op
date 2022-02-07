@@ -6,6 +6,7 @@ public class Main {
     private static queries query;
 
     private static ArrayList<HashSet<Integer>> getHashSetsOfQueries(ArrayList<String> queries){
+
         ArrayList<HashSet<Integer>> hashSets = new ArrayList<>();
 
         for(String query : queries){
@@ -14,6 +15,10 @@ public class Main {
             }
         }
         return hashSets;
+    }
+
+    private void addHashsets (ArrayList hashsets){
+
     }
 
 
@@ -64,7 +69,11 @@ class queries{
     private ArrayList<String> minusQueries = new ArrayList<>();
 
     public queries(String mainQuery){
+        this.mainQuery = mainQuery;
+        initializeQueriesFromMainQuery();
+    }
 
+    private void initializeQueriesFromMainQuery(){
         for (String query : mainQuery.split(" ")){
             if(query.startsWith("+")){
                 plusQueries.add(query.substring(1));

@@ -13,20 +13,14 @@ public class HashSetOperators {
     }
 
     public static HashSet<Integer> and (ArrayList<HashSet<Integer>> hashSets){
+
         if (hashSets.size() == 0){
             return new HashSet<>();
         }
         HashSet<Integer> hashSet = hashSets.get(0);
-        for (int i = 1; i < hashSets.size(); i++){
 
-            var toAnd = hashSets.get(i);
-            HashSet<Integer> and = new HashSet<>();
-            for (int id : toAnd){
-                if (hashSet.contains(id)){
-                    and.add(id);
-                }
-            }
-            hashSet = and;
+        for (int i = 1; i < hashSets.size(); i++){
+            hashSet.retainAll(hashSets.get(i));
         }
         return hashSet;
     }
