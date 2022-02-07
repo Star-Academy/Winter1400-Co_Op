@@ -17,11 +17,6 @@ public class Main {
         return hashSets;
     }
 
-    private void addHashsets (ArrayList hashsets){
-
-    }
-
-
     private static void scanQuery(){
         System.out.println("Enter the query:");
         Scanner scanner = new Scanner(System.in);
@@ -63,10 +58,10 @@ public class Main {
 
 class queries{
 
-    private String mainQuery;
-    private ArrayList<String> zeroQueries = new ArrayList<>();
-    private ArrayList<String> plusQueries = new ArrayList<>();
-    private ArrayList<String> minusQueries = new ArrayList<>();
+    private final String mainQuery;
+    private final ArrayList<String> zeroQueries = new ArrayList<>();
+    private final ArrayList<String> plusQueries = new ArrayList<>();
+    private final ArrayList<String> minusQueries = new ArrayList<>();
 
     public queries(String mainQuery){
         this.mainQuery = mainQuery;
