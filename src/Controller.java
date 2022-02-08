@@ -8,7 +8,7 @@ public class Controller {
     private Queries query;
 
     public Controller(){
-        dictionary =  FileReader.getInstance().fillIndexes();
+        dictionary =  new FileReader("files").fillIndexes();
     }
 
     public void setQuery(Queries query) {
