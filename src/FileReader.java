@@ -7,6 +7,13 @@ import java.util.HashSet;
 
 public class FileReader {
     HashMap<String, HashSet<Integer>> indexes = new HashMap<>();
+    private String pathName;
+
+
+    public FileReader(String pathName) {
+        this.pathName = pathName;
+
+    }
 
     private boolean readDataFromFile(File fileToRead) {
         String data;
@@ -36,7 +43,8 @@ public class FileReader {
 
     private String readContents(File fileToRead) {
         try {
-            return new String(Files.readAllBytes(Path.of(fileToRead.getAbsolutePath())));
+            Path path = Path.of(fileToRead.getAbsolutePath());
+            return new String(Files.readAllBytes(path));
         } catch (IOException e) {
             System.out.println("File doesn't exist!");
             return null;
@@ -44,9 +52,10 @@ public class FileReader {
 
     }
 
-    public void fillIndexes() {
+    public HashMap<String, HashSet<Integer>> fillIndexes() {
         File[] files = importFiles();
         readFiles(files);
+        return indexes;
     }
 
     private void readFiles(File[] files) {
@@ -57,7 +66,6 @@ public class FileReader {
     }
 
     private File[] importFiles() {
-        String pathName = "files";
         File file = new File(pathName);
         File[] files = file.listFiles();
         return files;
