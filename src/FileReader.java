@@ -9,10 +9,8 @@ public class FileReader {
     HashMap<String, HashSet<Integer>> indexes = new HashMap<>();
     private String pathName;
 
-
     public FileReader(String pathName) {
         this.pathName = pathName;
-
     }
 
     private boolean readDataFromFile(File fileToRead) {
@@ -67,12 +65,6 @@ public class FileReader {
 
     private File[] importFiles() {
         File file = new File(pathName);
-        File[] files = file.listFiles();
-        return files;
+        return file.listFiles();
     }
-
-    public HashSet<Integer> getIndex(String word) {
-        return indexes.get(word);
-    }
-
 }
