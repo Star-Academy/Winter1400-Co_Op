@@ -1,24 +1,25 @@
 import java.util.*;
 
 public class Main {
-    public static HashSet<Integer> sub(HashSet<Integer> hashSet1, HashSet<Integer> hashSet2){
+    public static HashSet<Integer> sub(HashSet<Integer> hashSet1, HashSet<Integer> hashSet2) {
         HashSet<Integer> tempAns = (HashSet<Integer>) hashSet1.clone();
-        for (int id : hashSet2){
+        for (int id : hashSet2) {
             tempAns.remove(id);
         }
         return tempAns;
     }
-    public static HashSet<Integer> and (ArrayList<HashSet<Integer>> hashSets){
-        if (hashSets.size() == 0){
+
+    public static HashSet<Integer> and(ArrayList<HashSet<Integer>> hashSets) {
+        if (hashSets.size() == 0) {
             return new HashSet<>();
         }
         HashSet<Integer> hashSet = hashSets.get(0);
-        for (int i = 1; i < hashSets.size(); i++){
+        for (int i = 1; i < hashSets.size(); i++) {
 
             var toAnd = hashSets.get(i);
             HashSet<Integer> and = new HashSet<>();
-            for (int id : toAnd){
-                if (hashSet.contains(id)){
+            for (int id : toAnd) {
+                if (hashSet.contains(id)) {
                     and.add(id);
                 }
             }
@@ -28,21 +29,20 @@ public class Main {
     }
 
 
-    public static HashSet<Integer> or (ArrayList<HashSet<Integer>> hashSets){
+    public static HashSet<Integer> or(ArrayList<HashSet<Integer>> hashSets) {
         HashSet<Integer> hashSet = new HashSet<>();
-        for (HashSet<Integer> tempHashSet : hashSets){
+        for (HashSet<Integer> tempHashSet : hashSets) {
             hashSet.addAll(tempHashSet);
         }
         return hashSet;
     }
 
 
-
-    public static ArrayList<HashSet<Integer>> getHashSetsOfQueries(ArrayList<String> queries, HashMap<String, HashSet<Integer>> dictionary){
+    public static ArrayList<HashSet<Integer>> getHashSetsOfQueries(ArrayList<String> queries, HashMap<String, HashSet<Integer>> dictionary) {
         ArrayList<HashSet<Integer>> hashSets = new ArrayList<>();
 
-        for(String query : queries){
-            if(dictionary.containsKey(query)){
+        for (String query : queries) {
+            if (dictionary.containsKey(query)) {
                 hashSets.add(dictionary.get(query));
             }
         }
@@ -58,10 +58,10 @@ public class Main {
         System.out.println("Enter the query:");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
-        for (String query : input.split(" ")){
-            if(query.startsWith("+")){
+        for (String query : input.split(" ")) {
+            if (query.startsWith("+")) {
                 queries1.add(query.substring(1));
-            } else if ( query.startsWith("-")){
+            } else if (query.startsWith("-")) {
                 queries2.add(query.substring(1));
             } else {
                 queries0.add(query);
@@ -73,7 +73,7 @@ public class Main {
         HashSet<Integer> hashSet2 = or(getHashSetsOfQueries(queries2, fileReader.indexes));
         HashSet<Integer> hashSet3 = hashSet0;
 
-        if(hashSet1.size() > 0){
+        if (hashSet1.size() > 0) {
             ArrayList<HashSet<Integer>> temp = new ArrayList<>();
             temp.add(hashSet0);
             temp.add(hashSet1);
