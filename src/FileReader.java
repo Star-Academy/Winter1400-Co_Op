@@ -65,7 +65,6 @@ public class FileReader {
 
     private File[] importFiles() {
         File file = new File(pathName);
-        File[] files = file.listFiles();
-        return files;
+        return file.listFiles();
     }
 }
