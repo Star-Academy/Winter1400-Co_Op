@@ -12,22 +12,20 @@ public class HashSetOperators {
         return tempAns;
     }
 
-    //[1,2,3] - [1] ==> [2,3]
 
     public static HashSet<Integer> and (ArrayList<HashSet<Integer>> hashSets){
 
         if (hashSets.size() == 0){
             return new HashSet<>();
         }
-        HashSet<Integer> hashSet = hashSets.get(0);
+        HashSet<Integer> hashSet = (HashSet<Integer>) hashSets.get(0).clone();
 
         for (int i = 1; i < hashSets.size(); i++){
             hashSet.retainAll(hashSets.get(i));
         }
         return hashSet;
     }
-    //[1,2,3] , [1, 4] ==> [1]
-    //[1] [2] ==> []
+
     public static HashSet<Integer> or (ArrayList<HashSet<Integer>> hashSets){
         HashSet<Integer> hashSet = new HashSet<>();
         for (HashSet<Integer> tempHashSet : hashSets){
