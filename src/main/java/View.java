@@ -5,7 +5,7 @@ public class View {
     Controller controller;
 
     public View(){
-        controller = new Controller();
+        controller = new Controller(new FileReader("files"));
     }
 
     public void run(){

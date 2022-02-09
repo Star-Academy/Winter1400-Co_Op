@@ -7,24 +7,12 @@ public class Controller {
     private final HashMap<String, HashSet<Integer>> dictionary;
     private Queries query;
 
-    public Controller(){
-        dictionary =  new FileReader("files").fillIndexes();
+    public Controller(FileReaderInterface fileReader){
+        dictionary =  fileReader.getIndexes();
     }
 
     public void setQuery(Queries query) {
         this.query = query;
-    }
-
-    private ArrayList<HashSet<Integer>> getFileIdsOfQueries(ArrayList<String> queries){
-
-        ArrayList<HashSet<Integer>> hashSets = new ArrayList<>();
-
-        for(String query : queries){
-            if(dictionary.containsKey(query)){
-                hashSets.add(dictionary.get(query));
-            }
-        }
-        return hashSets;
     }
 
     public HashSet<Integer> getFileIdsMatchesZeroAndPlusAndMinusQueries(){
@@ -42,14 +30,28 @@ public class Controller {
         return HashSetOperators.sub(tempHashSet, fileIdsMatchesMinusQueries);
     }
 
+    private ArrayList<HashSet<Integer>> getFileIdsOfQueries(ArrayList<String> queries){
+
+        ArrayList<HashSet<Integer>> hashSets = new ArrayList<>();
+
+        for(String query : queries){
+            if(dictionary.containsKey(query)){
+                hashSets.add(dictionary.get(query));
+            } else{
+                hashSets.add(new HashSet<Integer>());
+            }
+        }
+        return hashSets;
+    }
+
     private HashSet<Integer> getFileIdsMatchesZeroAndPlusQueries(HashSet<Integer> zeroSet,
                                                                  HashSet<Integer> plusSet){
-        if(plusSet.size() > 0){
+        if(zeroSet.size() > 0 && plusSet.size() > 0){
             ArrayList<HashSet<Integer>> temp = new ArrayList<>();
             temp.add(zeroSet);
             temp.add(plusSet);
             return HashSetOperators.and(temp);
         }
-        return zeroSet;
+        return zeroSet.size() == 0 ? plusSet : zeroSet;
     }
 }

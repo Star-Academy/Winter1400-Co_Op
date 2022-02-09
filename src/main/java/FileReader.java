@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class FileReader {
+public class FileReader implements FileReaderInterface {
     HashMap<String, HashSet<Integer>> indexes = new HashMap<>();
     private String pathName;
 
@@ -50,7 +50,7 @@ public class FileReader {
 
     }
 
-    public HashMap<String, HashSet<Integer>> fillIndexes() {
+    public HashMap<String, HashSet<Integer>> getIndexes() {
         File[] files = importFiles();
         readFiles(files);
         return indexes;
