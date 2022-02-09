@@ -12,6 +12,8 @@ public class HashSetOperators {
         return tempAns;
     }
 
+    //[1,2,3] - [1] ==> [2,3]
+
     public static HashSet<Integer> and (ArrayList<HashSet<Integer>> hashSets){
 
         if (hashSets.size() == 0){
@@ -24,7 +26,8 @@ public class HashSetOperators {
         }
         return hashSet;
     }
-
+    //[1,2,3] , [1, 4] ==> [1]
+    //[1] [2] ==> []
     public static HashSet<Integer> or (ArrayList<HashSet<Integer>> hashSets){
         HashSet<Integer> hashSet = new HashSet<>();
         for (HashSet<Integer> tempHashSet : hashSets){
@@ -32,4 +35,6 @@ public class HashSetOperators {
         }
         return hashSet;
     }
+    //[1,2,3,4] [1,2,5] == > [1,2,3,4,5]
+
 }
