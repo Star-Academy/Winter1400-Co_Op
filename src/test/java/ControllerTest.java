@@ -121,4 +121,15 @@ public class ControllerTest {
 
     }
 
+    @Test
+    public void test7(){
+        controller.setQuery(new Queries("one two +four"));
+
+        HashSet<Integer> expectedAnswer = new HashSet<>();
+
+        expectedAnswer.add(1);
+        checkExpectedAnswer(expectedAnswer);
+
+    }
+
 }
