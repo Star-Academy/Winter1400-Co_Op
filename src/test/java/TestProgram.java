@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.*;
 
 
 public class TestProgram {
@@ -34,10 +35,20 @@ public class TestProgram {
         String data = "I am looking for publically accessible sources of data depicting braiand neuron functions.";
         FileReader fileReader = new FileReader("files");
         String[] results = fileReader.processDocumentAndGiveWords(data);
-        String[] expected = new String[]{"i","am","look","for","public","access","source","of","data","depict","braiand","neuron","function"};
+        String[] expected = new String[]{"i","am","look","for","public","access","sourc","of","data","depict","braiand","neuron","function"};
         for(int i = 0; i < expected.length;i++)
            Assertions.assertEquals(expected[i],results[i]);
     }
+    @Test
+    public void testPuttingWordsInHashMap(){
+        FileReader fileReader = new FileReader("files");
+        HashMap<String, HashSet<Integer>> result = fileReader.getIndexes();
+        List<Integer> list = Arrays.asList(58913,58569,58578,58886,58912,58940,58965,59007,59105,59144,59183);
+        HashSet<Integer> expected = new HashSet<>(list);
+
+        Assertions.assertEquals(expected,result.get("remind"));
+    }
+
 
 
 
