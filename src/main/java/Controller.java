@@ -37,6 +37,8 @@ public class Controller {
         for(String query : queries){
             if(dictionary.containsKey(query)){
                 hashSets.add(dictionary.get(query));
+            } else{
+                hashSets.add(new HashSet<Integer>());
             }
         }
         return hashSets;
@@ -44,12 +46,12 @@ public class Controller {
 
     private HashSet<Integer> getFileIdsMatchesZeroAndPlusQueries(HashSet<Integer> zeroSet,
                                                                  HashSet<Integer> plusSet){
-        if(plusSet.size() > 0){
+        if(zeroSet.size() > 0 && plusSet.size() > 0){
             ArrayList<HashSet<Integer>> temp = new ArrayList<>();
             temp.add(zeroSet);
             temp.add(plusSet);
             return HashSetOperators.and(temp);
         }
-        return zeroSet;
+        return zeroSet.size() == 0 ? plusSet : zeroSet;
     }
 }
