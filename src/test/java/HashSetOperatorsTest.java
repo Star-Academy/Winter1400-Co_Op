@@ -15,7 +15,7 @@ public class HashSetOperatorsTest {
     HashSet<Integer> set4 = new HashSet<>();
 
     @BeforeEach
-    private void initialize(){
+    public void initialize(){
         set1.add(1);
         set1.add(3);
         set1.add(2);
