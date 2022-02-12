@@ -32,16 +32,16 @@ public class Controller {
 
     private ArrayList<HashSet<Integer>> getFileIdsOfQueries(ArrayList<String> queries){
 
-        ArrayList<HashSet<Integer>> hashSets = new ArrayList<>();
+        ArrayList<HashSet<Integer>> hashSetsOfFileIDsForEachQuery = new ArrayList<>();
 
         for(String query : queries){
             if(dictionary.containsKey(query)){
-                hashSets.add(dictionary.get(query));
+                hashSetsOfFileIDsForEachQuery.add(dictionary.get(query));
             } else{
-                hashSets.add(new HashSet<Integer>());
+                hashSetsOfFileIDsForEachQuery.add(new HashSet<Integer>());
             }
         }
-        return hashSets;
+        return hashSetsOfFileIDsForEachQuery;
     }
 
     private HashSet<Integer> getFileIdsMatchesZeroAndPlusQueries(HashSet<Integer> zeroSet,

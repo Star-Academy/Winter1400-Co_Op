@@ -9,8 +9,6 @@ import java.util.*;
 
 public class TestProgram {
 
-
-
     @Test
     public void testImportFiles(){
         FileReader fileReader = new FileReader("files");
@@ -48,13 +46,4 @@ public class TestProgram {
 
         Assertions.assertEquals(expected,result.get("remind"));
     }
-
-
-
-
-
-
-
-
-
 }

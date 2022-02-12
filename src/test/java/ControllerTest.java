@@ -56,7 +56,6 @@ public class ControllerTest {
         expectedAnswer.add(3);
 
         checkExpectedAnswer(expectedAnswer);
-
     }
 
     @Test
@@ -68,7 +67,6 @@ public class ControllerTest {
         expectedAnswer.add(2);
 
         checkExpectedAnswer(expectedAnswer);
-
     }
 
     @Test
@@ -80,7 +78,6 @@ public class ControllerTest {
         expectedAnswer.add(3);
 
         checkExpectedAnswer(expectedAnswer);
-
     }
 
     @Test
@@ -90,7 +87,6 @@ public class ControllerTest {
         HashSet<Integer> expectedAnswer = new HashSet<>();
 
         checkExpectedAnswer(expectedAnswer);
-
     }
 
     @Test
@@ -105,7 +101,6 @@ public class ControllerTest {
         expectedAnswer.add(7);
 
         checkExpectedAnswer(expectedAnswer);
-
     }
 
     @Test
@@ -118,7 +113,6 @@ public class ControllerTest {
         expectedAnswer.add(5);
 
         checkExpectedAnswer(expectedAnswer);
-
     }
 
     @Test
@@ -129,7 +123,6 @@ public class ControllerTest {
 
         expectedAnswer.add(1);
         checkExpectedAnswer(expectedAnswer);
-
     }
 
 }
