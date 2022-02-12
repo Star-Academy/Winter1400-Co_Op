@@ -31,9 +31,13 @@ public class TestProgram {
     @Test
     public void testProcessData(){
         String data = "I am looking for publically accessible sources of data depicting braiand neuron functions.";
+
         FileReader fileReader = new FileReader("files");
+
         String[] results = fileReader.processDocumentAndGiveWords(data);
+
         String[] expected = new String[]{"i","am","look","for","public","access","sourc","of","data","depict","braiand","neuron","function"};
+
         for(int i = 0; i < expected.length;i++)
            Assertions.assertEquals(expected[i],results[i]);
     }
