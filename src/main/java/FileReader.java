@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class FileReader {
+public class FileReader implements FileReaderInterface {
     HashMap<String, HashSet<Integer>> indexes = new HashMap<>();
     private String pathName;
 
@@ -13,7 +13,7 @@ public class FileReader {
         this.pathName = pathName;
     }
 
-    private boolean readDataFromFile(File fileToRead) {
+    public boolean readDataFromFile(File fileToRead) {
         String data;
         data = readContents(fileToRead);
         if (!isFileFound(data))
@@ -27,7 +27,7 @@ public class FileReader {
         return data != null;
     }
 
-    private String[] processDocumentAndGiveWords(String data) {
+    public String[] processDocumentAndGiveWords(String data) {
         DocumentProcessor documentProcessor = new DocumentProcessor(data);
         return documentProcessor.getNormalizedWords();
     }
@@ -50,7 +50,7 @@ public class FileReader {
 
     }
 
-    public HashMap<String, HashSet<Integer>> fillIndexes() {
+    public HashMap<String, HashSet<Integer>> getIndexes() {
         File[] files = importFiles();
         readFiles(files);
         return indexes;
@@ -63,7 +63,7 @@ public class FileReader {
         }
     }
 
-    private File[] importFiles() {
+    public File[] importFiles() {
         File file = new File(pathName);
         return file.listFiles();
     }

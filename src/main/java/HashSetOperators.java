@@ -12,12 +12,13 @@ public class HashSetOperators {
         return tempAns;
     }
 
+
     public static HashSet<Integer> and (ArrayList<HashSet<Integer>> hashSets){
 
         if (hashSets.size() == 0){
             return new HashSet<>();
         }
-        HashSet<Integer> hashSet = hashSets.get(0);
+        HashSet<Integer> hashSet = (HashSet<Integer>) hashSets.get(0).clone();
 
         for (int i = 1; i < hashSets.size(); i++){
             hashSet.retainAll(hashSets.get(i));
@@ -32,4 +33,6 @@ public class HashSetOperators {
         }
         return hashSet;
     }
+    //[1,2,3,4] [1,2,5] == > [1,2,3,4,5]
+
 }
