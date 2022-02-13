@@ -39,7 +39,7 @@ public class Controller
         }
     }
 
-    private List<StudentInformation> getFirstThreeStudents(){
+    private List<StudentInformation> GetFirstThreeStudents(){
 
         var data = studentsInformation.Values.ToList();
         data.Sort(new StudentsComparator());
@@ -58,7 +58,7 @@ public class Controller
         InitializeDeserializedStudentsInformation();
         InitializeStudentsInformation();
         CalculateAverages();
-        PrintAnswer(getFirstThreeStudents());
+        PrintAnswer(GetFirstThreeStudents());
     }
 }
 
