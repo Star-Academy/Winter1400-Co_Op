@@ -1,3 +1,3 @@
 ﻿using library;
 
-new controller().Run();
+new Controller().Run();
