@@ -1,4 +1,6 @@
 using Xunit;
+using SampleLibrary;
+using FluentAssertions;
 
 namespace SampleLibrary.Test
 {
@@ -9,6 +11,6 @@ namespace SampleLibrary.Test
             Assert.Equal(1,1);
         }
 
-        
+
     }
 }
