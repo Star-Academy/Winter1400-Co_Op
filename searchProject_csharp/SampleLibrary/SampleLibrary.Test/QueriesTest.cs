@@ -8,7 +8,8 @@ public class QueriesTest
     
     [Fact]
     public void test(){
-        Queries queries = new Queries("one two three +four +five -six -seven -eight -nine");
+        Queries queries = new Queries
+         ("one two three +four +five -six -seven -eight -nine");
         var expectedZeroQueries = new List<string>();
         expectedZeroQueries.Add("one");
         expectedZeroQueries.Add("two");
