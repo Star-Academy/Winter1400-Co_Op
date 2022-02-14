@@ -1,6 +1,5 @@
 using Xunit;
 using System.Collections.Generic;
-using SampleLibrary;
 namespace SampleLibrary.Test;
 
 public class QueriesTest
