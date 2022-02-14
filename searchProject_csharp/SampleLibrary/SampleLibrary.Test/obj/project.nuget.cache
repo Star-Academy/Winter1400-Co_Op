@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HmXSfirJhMK8I1NHpJj4+4URNJjRUMPwPxOc69Ax2iMwSVKZURSJjllheYOD4MGsk5MCenyLorAlvufS8GW46Q==",
+  "dgSpecHash": "1/4apa0xYi45VUP4iaPbilhrAeA76T5wdoKcvY1XnluZsMR3v3gWjW97PQB4IhUjQMCM5mFDVznYqZBWLkD4Bw==",
   "success": true,
-  "projectFilePath": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.Test\\SampleLibrary.Test.csproj",
+  "projectFilePath": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.test\\SampleLibrary.Test.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Padidar\\.nuget\\packages\\coverlet.collector\\3.1.0\\coverlet.collector.3.1.0.nupkg.sha512",
     "C:\\Users\\Padidar\\.nuget\\packages\\microsoft.codecoverage\\16.11.0\\microsoft.codecoverage.16.11.0.nupkg.sha512",

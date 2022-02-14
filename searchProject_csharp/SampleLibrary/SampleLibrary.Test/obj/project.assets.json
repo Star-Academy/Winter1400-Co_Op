@@ -1670,6 +1670,16 @@
         "build": {
           "build/netcoreapp2.1/xunit.runner.visualstudio.props": {}
         }
+      },
+      "SampleLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/SampleLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SampleLibrary.dll": {}
+        }
       }
     }
   },
@@ -5962,11 +5972,17 @@
         "xunit.runner.visualstudio.2.4.3.nupkg.sha512",
         "xunit.runner.visualstudio.nuspec"
       ]
+    },
+    "SampleLibrary/1.0.0": {
+      "type": "project",
+      "path": "../SampleLibrary/SampleLibrary.csproj",
+      "msbuildProject": "../SampleLibrary/SampleLibrary.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
       "Microsoft.NET.Test.Sdk >= 16.11.0",
+      "SampleLibrary >= 1.0.0",
       "coverlet.collector >= 3.1.0",
       "xunit >= 2.4.1",
       "xunit.runner.visualstudio >= 2.4.3"
@@ -5978,11 +5994,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.Test\\SampleLibrary.Test.csproj",
+      "projectUniqueName": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.test\\SampleLibrary.Test.csproj",
       "projectName": "SampleLibrary.Test",
-      "projectPath": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.Test\\SampleLibrary.Test.csproj",
+      "projectPath": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.test\\SampleLibrary.Test.csproj",
       "packagesPath": "C:\\Users\\Padidar\\.nuget\\packages\\",
-      "outputPath": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.Test\\obj\\",
+      "outputPath": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.test\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Padidar\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -5996,7 +6012,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\SampleLibrary.csproj": {
+              "projectPath": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\SampleLibrary.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
