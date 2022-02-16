@@ -3,15 +3,15 @@ namespace SampleLibrary
     public class FileReader : IFileReader
     {
 
-        private string path;
-       private Dictionary<string,HashSet<int>> indexes = new Dictionary<string, HashSet<int>>();
+        private string _path;
+        private Dictionary<string,HashSet<int>> indexes = new Dictionary<string, HashSet<int>>();
         public FileReader(string path){
-            this.path = path;
+            _path = path;
         }
 
 
         public FileInfo[] getAddressOfFiles(){
-            DirectoryInfo di = new DirectoryInfo(path);
+            DirectoryInfo di = new DirectoryInfo(_path);
             FileInfo[] fileInfos = di.GetFiles();
             return fileInfos;
             
@@ -43,8 +43,6 @@ namespace SampleLibrary
                 HashSet<int> fileIds = computeIfAbsent(words[i]);
                 fileIds.Add(Convert.ToInt32(fileName));      
             }
-
-
         }
         private HashSet<int> computeIfAbsent(string word){
             HashSet<int> fileIds;

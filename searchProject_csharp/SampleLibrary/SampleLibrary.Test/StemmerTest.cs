@@ -4,44 +4,44 @@ namespace SampleLibrary.Test;
 
 public class StemmerTest
 {
-    private Stemmer stemmer = new Stemmer();
+    private Stemmer _stemmer = new Stemmer();
     [Fact]
     public void test(){
-        Assert.Equal("optim", stemmer.StemWord("optimization"));
+        Assert.Equal("optim", _stemmer.StemWord("optimization"));
     }
     [Fact]
     public void endingWithEdTest(){
-        Assert.Equal("work", stemmer.StemWord("worked"));
+        Assert.Equal("work", _stemmer.StemWord("worked"));
     }
     [Fact]
     public void endingWithConsTest(){
-        Assert.Equal("debug", stemmer.StemWord("debugging"));
+        Assert.Equal("debug", _stemmer.StemWord("debugging"));
     }
     [Fact]
     public void pluralWithSTest(){
-        Assert.Equal("car", stemmer.StemWord("cars"));
+        Assert.Equal("car", _stemmer.StemWord("cars"));
     }
     [Fact]
     public void endingWithAbleTest(){
-        Assert.Equal("compat", stemmer.StemWord("compatible"));
+        Assert.Equal("compat", _stemmer.StemWord("compatible"));
     }
     [Fact]
     public void endingWithIzationTest(){
-        Assert.Equal("final", stemmer.StemWord("finalization"));
+        Assert.Equal("final", _stemmer.StemWord("finalization"));
     }
     [Fact]
     public void endingWithAtionTest(){
-        Assert.Equal("alloc", stemmer.StemWord("allocation"));
+        Assert.Equal("alloc", _stemmer.StemWord("allocation"));
     }[Fact]
     public void endingWithAtorTest(){
-        Assert.Equal("motiv", stemmer.StemWord("motivator"));
+        Assert.Equal("motiv", _stemmer.StemWord("motivator"));
     }
     [Fact]
     public void endingWithFulnessTest(){
-        Assert.Equal("aw", stemmer.StemWord("awfulness"));
+        Assert.Equal("aw", _stemmer.StemWord("awfulness"));
     }
     [Fact]
     public void endingWithETest(){
-        Assert.Equal("ablaz", stemmer.StemWord("ablaze"));
+        Assert.Equal("ablaz", _stemmer.StemWord("ablaze"));
     }
 }

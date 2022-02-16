@@ -4,9 +4,9 @@ namespace SampleLibrary
 {
     public class DummyFileReader : IFileReader
     {
-        public Dictionary<string, HashSet<int>> tempDictionary;
+        public Dictionary<string, HashSet<int>> TempDictionary;
         public Dictionary<string, HashSet<int>> GetIndexes(){
-            return tempDictionary;
+            return TempDictionary;
         }
     }
 }

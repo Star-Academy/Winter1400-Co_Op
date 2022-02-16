@@ -4,23 +4,23 @@ namespace SampleLibrary
 {
     public class Controller
     {
-        public Queries query{set; get;}
-        private Dictionary<string, HashSet<int>> dictionary;
+        public Queries Query{set; get;}
+        private Dictionary<string, HashSet<int>> _dictionary;
         public Controller(IFileReader fileReader){
-            dictionary = fileReader.GetIndexes();
+            _dictionary = fileReader.GetIndexes();
         }
 
         public HashSet<int> GetFileIdsMatchZeroAndPlusAndMinusQueries()
         {
 
             var fileIDsMatchZeroQueries = HashSetOperators.And(
-                GetHashSetsOfListOfQueries(query.zeroQueries));
+                GetHashSetsOfListOfQueries(Query.zeroQueries));
 
             var fileIDsMatchPlusQueries = HashSetOperators.Or(
-                GetHashSetsOfListOfQueries(query.plusQueries));
+                GetHashSetsOfListOfQueries(Query.plusQueries));
 
             var fileIDsMatchMinusQueries = HashSetOperators.Or(
-                GetHashSetsOfListOfQueries(query.minusQueries));
+                GetHashSetsOfListOfQueries(Query.minusQueries));
 
 
             return HashSetOperators.Sub(
@@ -31,11 +31,11 @@ namespace SampleLibrary
         private List<HashSet<int>> GetHashSetsOfListOfQueries(List<string> queries){
             return queries.Select(query =>
                 {
-                    if(!dictionary.ContainsKey(query))
+                    if(!_dictionary.ContainsKey(query))
                     {
                         return new HashSet<int>();
                     }
-                    return dictionary[query];
+                    return _dictionary[query];
 
                 }).ToList();
         }

@@ -22,7 +22,7 @@ public class ControllerTest
         dictionary.Add("four", set4);
 
         controller = new Controller
-            (new DummyFileReader(){tempDictionary = dictionary});
+            (new DummyFileReader(){TempDictionary = dictionary});
     }
 
     public void CheckExpectedAnswer (HashSet<int> expectedAnswer){
@@ -34,7 +34,7 @@ public class ControllerTest
 
 [Fact]
 public void Test1(){
-    controller.query = new Queries("one");
+    controller.Query = new Queries("one");
 
     var expectedAnswer = new HashSet<int>(){1, 2, 3};
 
@@ -43,7 +43,7 @@ public void Test1(){
 
     [Fact]
     public void Test2(){
-        controller.query = (new Queries("one four"));
+        controller.Query = (new Queries("one four"));
 
         var expectedAnswer = new HashSet<int>(){1, 2};
 
@@ -52,7 +52,7 @@ public void Test1(){
 
     [Fact]
     public void Test3(){
-        controller.query = new Queries("one -three");
+        controller.Query = new Queries("one -three");
 
         var expectedAnswer = new HashSet<int>(){1, 3};
 
@@ -61,7 +61,7 @@ public void Test1(){
 
     [Fact]
     public void Test4(){
-        controller.query = new Queries("two five");
+        controller.Query = new Queries("two five");
 
         var expectedAnswer = new HashSet<int>();
 
@@ -70,7 +70,7 @@ public void Test1(){
 
     [Fact]
     public void Test5(){
-        controller.query = new Queries("+two +four");
+        controller.Query = new Queries("+two +four");
 
         var expectedAnswer = new HashSet<int>(){1, 2, 4, 5, 7};
 
@@ -79,7 +79,7 @@ public void Test1(){
 
     [Fact]
     public void Test6(){
-        controller.query = new Queries("+two -four");
+        controller.Query = new Queries("+two -four");
 
         var expectedAnswer = new HashSet<int>(){4, 5};
 
@@ -88,7 +88,7 @@ public void Test1(){
 
     [Fact]
     public void Test7(){
-        controller.query = new Queries("one two +four");
+        controller.Query = new Queries("one two +four");
 
         var expectedAnswer = new HashSet<int>(){1};
         
