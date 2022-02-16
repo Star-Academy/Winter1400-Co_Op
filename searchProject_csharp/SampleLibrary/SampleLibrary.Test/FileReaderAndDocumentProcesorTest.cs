@@ -1,22 +1,18 @@
 using Xunit;
 using SampleLibrary;
 using System.IO;
-//using FluentAssertions;
 using System.Collections.Generic;
 namespace SampleLibrary.Test;
 
 
-public class UnitTest1
+public class FileReaderAndDocumentProcessorTest
 {
     [Fact]
     public void TestImportFiles()
     {
-     //   int number = 1;
-      //  number.Should().BeEqual(1);
-     // Assert.Equal(1,2);
-    FileReader fileReader = new FileReader(@"C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\files");
-    FileInfo[] addresses =  fileReader.getAddressOfFiles();
-    Assert.Equal(1000,addresses.Length);          
+      FileReader fileReader = new FileReader(@"C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\files");
+      FileInfo[] addresses =  fileReader.getAddressOfFiles();
+      Assert.Equal(1000,addresses.Length);          
     }
     [Fact]
     public void TestReadingFile(){
