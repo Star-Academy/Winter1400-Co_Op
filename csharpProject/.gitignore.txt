@@ -2,6 +2,7 @@
 .idea
 files
 *.iml
-.vscode
+/.vscode/
+
 bin
 obj
