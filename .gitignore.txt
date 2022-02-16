@@ -1,0 +1,9 @@
+/out/
+.idea
+files
+*.iml
+csharpProject\.vscode
+bin
+obj
+temp
+*.json
