@@ -30,8 +30,10 @@ public class StemmerTest
         Assert.Equal("final", stemmer.StemWord("finalization"));
     }
     [Fact]
-    public void endingWithAtionAndAtorTest(){
+    public void endingWithAtionTest(){
         Assert.Equal("alloc", stemmer.StemWord("allocation"));
+    }[Fact]
+    public void endingWithAtorTest(){
         Assert.Equal("motiv", stemmer.StemWord("motivator"));
     }
     [Fact]

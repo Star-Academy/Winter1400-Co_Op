@@ -3,7 +3,7 @@
 public class Stemmer
 {
     private char[] wordArray;		// character array copy of the given string
-	private int stem, end;			// indices to the current end (last letter) of the stem and the word in the array
+	private int _stem, _end;			// indices to the current end (last letter) of the stem and the word in the array
 
 	// Get the stem of a word at least three letters long:
 	public string StemWord ( string word )
@@ -12,29 +12,47 @@ public class Stemmer
 			return word;
 
 		wordArray = word.ToCharArray ();
-		stem = 0;
-		end = word.Length - 1;
+		_stem = 0;
+		_end = word.Length - 1;
 
-		Step1 ();
-		Step2 ();
-		Step3 ();
-		Step4 ();
-		Step5 ();
-		Step6 ();
+		CorrectPlurals ();
+		ChangeLastYToI ();
+		FoldDoubleSuffixes ();
+		CorrectFullAndNess ();
+		ChangeSuffixFinish ();
+		RemoveFinalE ();
 
-		return new string ( wordArray, 0, end + 1 );
+		return new string ( wordArray, 0, _end + 1 );
+	}
+
+	private void CorrectEndingWithEdAndIng()
+	{
+		_end = _stem;
+		if ( EndsWith ( "at" ) )
+			OverwriteEnding ( "ate" );
+		else if ( EndsWith ( "bl" ) )
+			OverwriteEnding ( "ble" );
+		else if ( EndsWith ( "iz" ) )
+			OverwriteEnding ( "ize" );
+		else if ( EndsWithDoubleConsonant () )
+		{
+			if ( !"lsz".Contains ( wordArray [ _end - 1 ] ) )
+				Truncate ();
+		}
+		else if ( ConsonantSequenceCount () == 1 && PrecededByCvc ( _end ) )
+			OverwriteEnding ( "e" );
 	}
 
 	// Step 1: remove basic plurals and -ed/-ing:
-	private void Step1 ()
+	private void CorrectPlurals ()
 	{
-		if ( wordArray [ end ] == 's' )
+		if ( wordArray [ _end ] == 's' )
 		{
 			if ( EndsWith ( "sses" ) )
 				Truncate ( 2 );
 			else if ( EndsWith ( "ies" ) )
 				OverwriteEnding ( "i" );
-			else if ( wordArray [ end - 1 ] != 's' )
+			else if ( wordArray [ _end - 1 ] != 's' )
 				Truncate ();
 		}
 
@@ -45,34 +63,20 @@ public class Stemmer
 		}
 		else if ( ( EndsWith ( "ed" ) || EndsWith ( "ing" ) ) && VowelInStem () )
 		{
-			end = stem;
-			if ( EndsWith ( "at" ) )
-				OverwriteEnding ( "ate" );
-			else if ( EndsWith ( "bl" ) )
-				OverwriteEnding ( "ble" );
-			else if ( EndsWith ( "iz" ) )
-				OverwriteEnding ( "ize" );
-			else if ( EndsWithDoubleConsonant () )
-			{
-				if ( !"lsz".Contains ( wordArray [ end - 1 ] ) )
-					Truncate ();
-			}
-			else if ( ConsonantSequenceCount () == 1 && PrecededByCVC ( end ) )
-				OverwriteEnding ( "e" );
+			CorrectEndingWithEdAndIng();
 		}
 	}
 
 	// Step 2: change a terminal 'y' to 'i' if there is another vowel in the stem:
-	private void Step2 ()
+	private void ChangeLastYToI ()
 	{
 		if ( EndsWith ( "y" ) && VowelInStem () )
 			OverwriteEnding ( "i" );
 	}
 
-	// Step 3: fold double suffixes to single suffix, e.g., -ization = -ize + -ation -> -ize:
-	private void Step3 ()
+	private void FoldDoubleSuffixesFirstStep(char ch)
 	{
-		switch ( wordArray [ end - 1 ] )
+		switch (ch)
 		{
 			case 'a':
 				if ( ReplaceEnding ( "ational", "ate" ) ) break;
@@ -88,6 +92,13 @@ public class Stemmer
 				if ( ReplaceEnding ( "entli", "ent" ) ) break;
 				if ( ReplaceEnding ( "eli", "e" ) ) break;
 				ReplaceEnding ( "ousli", "ous" ); break;
+		}
+	}
+
+	private void FoldDoubleSuffixesSecondStep(char ch)
+	{
+		switch (ch)
+		{
 			case 'o':
 				if ( ReplaceEnding ( "ization", "ize" ) ) break;
 				if ( ReplaceEnding ( "ation", "ate" ) ) break;
@@ -106,10 +117,17 @@ public class Stemmer
 		}
 	}
 
-	// Step 4: replace -ic-, -full, -ness, etc. with simpler endings:
-	private void Step4 ()
+	// Step 3: fold double suffixes to single suffix, e.g., -ization = -ize + -ation -> -ize:
+	private void FoldDoubleSuffixes ()
 	{
-		switch ( wordArray [ end ] )
+		FoldDoubleSuffixesFirstStep(wordArray[_end - 1]);
+		FoldDoubleSuffixesSecondStep(wordArray[_end - 1]);
+	}
+
+	// Step 4: replace -ic-, -full, -ness, etc. with simpler endings:
+	private void CorrectFullAndNess ()
+	{
+		switch ( wordArray [ _end ] )
 		{
 			case 'e':
 				if ( ReplaceEnding ( "icate", "ic" ) ) break;
@@ -124,87 +142,113 @@ public class Stemmer
 				ReplaceEnding ( "ness", "" ); break;
 		}
 	}
+	
+	private bool changeSuffixFinishFirstStep(char ch){
+        switch (ch) {
+            case 'a' : {
+                return EndsWith("al");
+            }
+            case 'c' : {
+                return EndsWith("ance") || EndsWith("ence");
+            }
+            case 'e' : {
+                return EndsWith("er");
+            }
+            case 'i' : {
+                return EndsWith("ic");
+            }
 
+        }
+        return false;
+    }
+    private bool changeSuffixFinishSecondStep(char ch){
+        switch (ch){
+            case 'l' : {
+                return EndsWith("able") || EndsWith("ible");
+            }
+            case 'n' : {
+                return EndsWith("ant") || EndsWith("ement") || EndsWith("ment") || EndsWith("ent");
+            }
+        }
+        return false;
+    }
+    private bool changeSuffixFinishThirdStep(char ch){
+        switch (ch){
+            case 'o' : {
+                return (EndsWith("ion") && _stem >= 0 && ( wordArray[_stem] == 's' || wordArray[_stem] == 't' )) || EndsWith("ou");
+            }
+            /* takes care of -ous */
+            case 's' : {
+                return EndsWith("ism");
+            }
+            case 't' : {
+                return EndsWith("ate") || EndsWith("iti");
+            }
+
+        }
+        return false;
+    }
+    private bool changeSuffixFinishFourthStep(char ch){
+        switch (ch) {
+            case 'u' : {
+                return EndsWith("ous");
+            }
+            case 'v' : {
+                return EndsWith("ive");
+            }
+            case 'z' : {
+                return EndsWith("ize");
+            }
+            default : {
+                return false;
+            }
+        }
+    }
 	// Step 5: remove -ant, -ence, etc.:
-	private void Step5 ()
-	{
-		switch ( wordArray [ end - 1 ] )
-		{
-			case 'a':
-				if ( EndsWith ( "al" ) ) break; return;
-			case 'c':
-				if ( EndsWith ( "ance" ) ) break;
-				if ( EndsWith ( "ence" ) ) break; return;
-			case 'e':
-				if ( EndsWith ( "er" ) ) break; return;
-			case 'i':
-				if ( EndsWith ( "ic" ) ) break; return;
-			case 'l':
-				if ( EndsWith ( "able" ) ) break;
-				if ( EndsWith ( "ible" ) ) break; return;
-			case 'n':
-				if ( EndsWith ( "ant" ) ) break;
-				if ( EndsWith ( "ement" ) ) break;
-				if ( EndsWith ( "ment" ) ) break;
-				if ( EndsWith ( "ent" ) ) break; return;
-			case 'o':
-				if ( EndsWith ( "ion" ) && stem >= 0 && ( wordArray[stem] == 's' || wordArray[stem] == 't' ) ) break;
-				if ( EndsWith ( "ou" ) ) break; return;
-			case 's':
-				if ( EndsWith ( "ism" ) ) break; return;
-			case 't':
-				if ( EndsWith ( "ate" ) ) break;
-				if ( EndsWith ( "iti" ) ) break; return;
-			case 'u':
-				if ( EndsWith ( "ous" ) ) break; return;
-			case 'v':
-				if ( EndsWith ( "ive" ) ) break; return;
-			case 'z':
-				if ( EndsWith ( "ize" ) ) break; return;
-			default:
-				return;
-		}
+    private void ChangeSuffixFinish() {
+        char ch = wordArray [ _end - 1 ];
+        bool b = changeSuffixFinishFirstStep(ch) || changeSuffixFinishSecondStep(ch)
+                || changeSuffixFinishThirdStep(ch) || changeSuffixFinishFourthStep(ch);
+        if (b && ConsonantSequenceCount () > 1)
+	        _end = _stem;
+    }
 
-		if ( ConsonantSequenceCount () > 1 )
-			end = stem;
-	}
-
-	// Step 6: remove final 'e' if necessary:
-	private void Step6 ()
+    // Step 6: remove final 'e' if necessary:
+	private void RemoveFinalE ()
 	{
-		stem = end;
-		if ( wordArray [ end ] == 'e' )
+		_stem = _end;
+		if ( wordArray [ _end ] == 'e' )
 		{
 			var m = ConsonantSequenceCount ();
-			if ( m > 1 || m == 1 && !PrecededByCVC ( end - 1 ) )
+			if ( m > 1 || m == 1 && !PrecededByCvc ( _end - 1 ) )
 				Truncate ();
 		}
 
-		if ( wordArray [ end ] == 'l' && EndsWithDoubleConsonant() && ConsonantSequenceCount () > 1 )
+		if ( wordArray [ _end ] == 'l' && EndsWithDoubleConsonant() && ConsonantSequenceCount () > 1 )
 			Truncate ();
 	}
 
 	private void Truncate ( int n = 1 )
 	{
-		end -= n;
+		_end -= n;
 	}
-
+	
 	// Count the number of CVC sequences:
 	private int ConsonantSequenceCount ()
 	{
 		int m = 0, index = 0;
-		for ( ; index <= stem && IsConsonant ( index ); index++ ) ;
-		if ( index > stem )
+		for ( ; index <= _stem && IsConsonant ( index ); index++ ) ;
+		if ( index > _stem )
 			return 0;
 
 		for ( index++; ; index++ )
 		{
-			for ( ; index <= stem && !IsConsonant ( index ); index++ ) ;
-			if ( index > stem )
+			for ( ; index <= _stem && !IsConsonant ( index ); index++ ) ;
+			if ( index > _stem )
 				return m;
 
-			for ( index++, m++; index <= stem && IsConsonant ( index ); index++ ) ;
-			if ( index > stem )
+			for ( index++, m++; index <= _stem && IsConsonant ( index ); index++ ) ;
+			if ( index > _stem )
 				return m;
 		}
 	}
@@ -212,7 +256,7 @@ public class Stemmer
 	// Return true if there is a vowel in the current stem:
 	private bool VowelInStem ()
 	{
-		for ( var i = 0; i <= stem; i++ )
+		for ( var i = 0; i <= _stem; i++ )
 			if ( !IsConsonant ( i ) )
 				return true;
 		return false;
@@ -230,12 +274,12 @@ public class Stemmer
 	// Return true if the char. at the current index and the one preceeding it are the same consonant:
 	private bool EndsWithDoubleConsonant()
 	{
-		return end > 0 && wordArray [ end ] == wordArray [ end - 1 ] && IsConsonant ( end );
+		return _end > 0 && wordArray [ _end ] == wordArray [ _end - 1 ] && IsConsonant ( _end );
 	}
 
 	// Check if the letters at i-2, i-1, i have the pattern: consonant-vowel-consonant (CVC) and the second consonant
 	// is not w, x or y; used when restoring an 'e' at the end of a short word, e.g., cav(e), lov(e), hop(e), etc.:
-	private bool PrecededByCVC ( int index )
+	private bool PrecededByCvc ( int index )
 	{
 		if ( index < 2 || !IsConsonant ( index ) || IsConsonant ( index - 1 ) || !IsConsonant ( index - 2 ) )
 			return false;
@@ -246,14 +290,14 @@ public class Stemmer
 	// Check if the given string appears at the end of the word:
 	private bool EndsWith ( string s )
 	{
-		int length = s.Length, index = end - length + 1;
+		int length = s.Length, index = _end - length + 1;
 		if ( index >= 0 )
 		{
 			for ( var i = 0; i < length; i++ )
 				if ( wordArray [ index + i ] != s[i] )
 					return false;
 
-			stem = end - length;
+			_stem = _end - length;
 			return true;
 		}
 		return false;
@@ -273,9 +317,9 @@ public class Stemmer
 	// Change the end of the word to a given string:
 	private void OverwriteEnding ( string s )
 	{
-		int length = s.Length, index = stem + 1;
+		int length = s.Length, index = _stem + 1;
 		for ( var i = 0; i < length; i++ )
 			wordArray [ index + i ] = s[i];
-		end = stem + length;
+		_end = _stem + length;
 	}
 }
