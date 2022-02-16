@@ -1,10 +1,10 @@
 namespace SampleLibrary
 {
-    public class FileReader
+    public class FileReader : IFileReader
     {
 
         private string path;
-        Dictionary<string,HashSet<int>> indexes = new Dictionary<string, HashSet<int>>();
+       private Dictionary<string,HashSet<int>> indexes = new Dictionary<string, HashSet<int>>();
         public FileReader(string path){
             this.path = path;
         }
@@ -69,7 +69,7 @@ namespace SampleLibrary
             return documentProcessor.getNormalizedWords();
 
         }
-        public Dictionary<string,HashSet<int>> getIndexes(){
+        public Dictionary<string,HashSet<int>> GetIndexes(){
             FileInfo[] files = getAddressOfFiles();
             readFiles(files);
             return indexes;

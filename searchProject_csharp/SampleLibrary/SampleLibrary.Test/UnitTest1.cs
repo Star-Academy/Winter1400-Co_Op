@@ -14,7 +14,7 @@ public class UnitTest1
      //   int number = 1;
       //  number.Should().BeEqual(1);
      // Assert.Equal(1,2);
-    FileReader fileReader = new FileReader("C:\\Users\\Alireza\\Desktop\\mohProject\\Winter1400-Co_Op\\files");
+    FileReader fileReader = new FileReader(@"C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\files");
     FileInfo[] addresses =  fileReader.getAddressOfFiles();
     Assert.Equal(1000,addresses.Length);          
     }
@@ -46,7 +46,7 @@ public class UnitTest1
     [Fact]
     public void TestPuttingWordsInHashMap(){
         FileReader fileReader = new FileReader(@"C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\files");
-        Dictionary <string,HashSet<int>> result = fileReader.getIndexes();
+        Dictionary <string,HashSet<int>> result = fileReader.GetIndexes();
         List<int> list = new List<int>{58913,58569,58578,58886,58912,58940,58965,59007,59105,59144,59183};
         HashSet<int> expected = new HashSet<int>(list);
         bool x = result.TryGetValue("remind",out HashSet<int> y);
