@@ -2,63 +2,50 @@
 
 public class Controller
 {
-    private List<StudentInformation> deserializedStudentsInformation;
-    private List<ScoreInformation> deserizlizedScoresInformation;
-    private Dictionary<int, StudentInformation> studentsInformation;
-
-    private void InitializeDeserializedStudentsInformation(){
-        var studentsFileReader = new FileReader() {path = @"../files/students.txt"};
-        var studentsJsonData = studentsFileReader.ReadFile();
-        deserializedStudentsInformation = Deserializer<StudentInformation>
-            .DeserializeArrayOfJsonObjects(studentsJsonData);
-    }
-
-    private void InitializeDeserizlizedScoresInformation(){
-        var scoresFileReader = new FileReader() {path = @"../files/scores.txt"};
+    private List<T> DeserializeJsonArrayFileByPath <T>(string path){
+        var scoresFileReader = new FileReader() {path = path};
         var scoresJsonData = scoresFileReader.ReadFile();
-        deserizlizedScoresInformation = Deserializer<ScoreInformation>.DeserializeArrayOfJsonObjects(scoresJsonData);
+        return Deserializer<T>
+         .DeserializeArrayOfJsonObjects(scoresJsonData);
     }
 
-    private void InitializeStudentsInformation(){
-        studentsInformation = new Dictionary<int, StudentInformation>();
-
-        foreach(var student in deserializedStudentsInformation){
-            var eachData = new StudentInformation(){
-                firstName = student.firstName,
-                lastName = student.lastName,
-                studentNumber = student.studentNumber
-            };
-            studentsInformation.Add(student.studentNumber, eachData);
+    private void AddScoresToInformationOfStudents(
+        Dictionary<int, StudentInformation> studentInformation, 
+        List <ScoreInformation> scoreInformation)
+    {
+        foreach (var score in scoreInformation)
+        {
+            studentInformation[score.studentNumber].AddScore(score.score);
         }
     }
 
-    private void CalculateAverages(){
-        foreach (var score in deserizlizedScoresInformation){
-            var eachData = studentsInformation[score.studentNumber];
-            eachData.AddScore(score.score);
-        }
+    private Dictionary<Key, Value> ConvertListToDictionary <Key, Value>
+     (List<Value> list, Func<Value, Key> GetKey){
+
+        return list.
+            Select(element => element).
+            ToDictionary(element => GetKey(element),element => element);
     }
 
-    private List<StudentInformation> GetFirstThreeStudents(){
+    public void Run(string studentsPath, string scoresPath){
+        var deserializedInformationOfStudents = 
+            DeserializeJsonArrayFileByPath<StudentInformation>(studentsPath);
+        
+        var deserizlizedInformationOfScores = 
+            DeserializeJsonArrayFileByPath<ScoreInformation>(scoresPath);
+        
+        var informationOfStudents = 
+            ConvertListToDictionary<int, StudentInformation>
+            (deserializedInformationOfStudents, s => s.studentNumber);
 
-        var data = studentsInformation.Values.ToList();
-        data.Sort(new StudentsComparator());
-        return data.GetRange(0,3);
-    }
-
-    private void PrintAnswer(List<StudentInformation>data){
-        foreach (var eachData in data){
-            Console.WriteLine(eachData.firstName + " " +
-                eachData.lastName + " : " + eachData.average);
-        }
-    }
-    
-    public void Run(){
-        InitializeDeserizlizedScoresInformation();
-        InitializeDeserializedStudentsInformation();
-        InitializeStudentsInformation();
-        CalculateAverages();
-        PrintAnswer(GetFirstThreeStudents());
+        AddScoresToInformationOfStudents
+            (informationOfStudents, deserizlizedInformationOfScores);
+        
+        informationOfStudents.Values.ToList().OrderByDescending(s => s.average)
+            .Take(3).ToList().ForEach(
+            information => Console.WriteLine(
+            $"{information.firstName} {information.lastName}" +
+            $" : {information.average}"));
     }
 }
 
