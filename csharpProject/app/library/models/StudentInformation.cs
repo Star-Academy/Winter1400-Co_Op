@@ -10,4 +10,8 @@ public class StudentInformation
     public void AddScore(float newScore){
         Average = ((Average * Count) + newScore) / ++Count;
     }
+    public string toString(){
+        string description = $"{this.FirstName} {this.LastName}"+ $" : {this.Average}";
+        return description;
+    }
 }

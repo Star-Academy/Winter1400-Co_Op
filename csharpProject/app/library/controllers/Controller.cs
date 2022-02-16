@@ -51,8 +51,7 @@ public class Controller : IController
         
         return information.OrderByDescending
         (s => s.Average).Take(3).Select(information => 
-        $"{information.FirstName} {information.LastName}" +
-        $" : {information.Average}").ToList();
+        information.toString()).ToList();
     }
 
 }
