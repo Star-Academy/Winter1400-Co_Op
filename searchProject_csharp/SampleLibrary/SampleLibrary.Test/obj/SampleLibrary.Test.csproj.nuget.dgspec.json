@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.test\\SampleLibrary.Test.csproj": {}
+    "C:\\Users\\Alireza\\Desktop\\mohProject\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.Test\\SampleLibrary.Test.csproj": {}
   },
   "projects": {
-    "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.test\\SampleLibrary.Test.csproj": {
+    "C:\\Users\\Alireza\\Desktop\\mohProject\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.Test\\SampleLibrary.Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.test\\SampleLibrary.Test.csproj",
+        "projectUniqueName": "C:\\Users\\Alireza\\Desktop\\mohProject\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.Test\\SampleLibrary.Test.csproj",
         "projectName": "SampleLibrary.Test",
-        "projectPath": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.test\\SampleLibrary.Test.csproj",
-        "packagesPath": "C:\\Users\\Padidar\\.nuget\\packages\\",
-        "outputPath": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.test\\obj\\",
+        "projectPath": "C:\\Users\\Alireza\\Desktop\\mohProject\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.Test\\SampleLibrary.Test.csproj",
+        "packagesPath": "C:\\Users\\Alireza\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Alireza\\Desktop\\mohProject\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary.Test\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Padidar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Alireza\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -26,8 +26,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\SampleLibrary.csproj": {
-                "projectPath": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\SampleLibrary.csproj"
+              "C:\\Users\\Alireza\\Desktop\\mohProject\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\SampleLibrary.csproj": {
+                "projectPath": "C:\\Users\\Alireza\\Desktop\\mohProject\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\SampleLibrary.csproj"
               }
             }
           }
@@ -82,17 +82,17 @@
         }
       }
     },
-    "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\SampleLibrary.csproj": {
+    "C:\\Users\\Alireza\\Desktop\\mohProject\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\SampleLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\SampleLibrary.csproj",
+        "projectUniqueName": "C:\\Users\\Alireza\\Desktop\\mohProject\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\SampleLibrary.csproj",
         "projectName": "SampleLibrary",
-        "projectPath": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\SampleLibrary.csproj",
-        "packagesPath": "C:\\Users\\Padidar\\.nuget\\packages\\",
-        "outputPath": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\obj\\",
+        "projectPath": "C:\\Users\\Alireza\\Desktop\\mohProject\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\SampleLibrary.csproj",
+        "packagesPath": "C:\\Users\\Alireza\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Alireza\\Desktop\\mohProject\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Padidar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Alireza\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -115,6 +115,12 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[6.5.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

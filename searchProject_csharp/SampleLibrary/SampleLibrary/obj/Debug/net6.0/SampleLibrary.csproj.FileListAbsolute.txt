@@ -10,3 +10,15 @@ F:\moh\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\obj\Deb
 F:\moh\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\obj\Debug\net6.0\SampleLibrary.dll
 F:\moh\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\obj\Debug\net6.0\ref\SampleLibrary.dll
 F:\moh\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\obj\Debug\net6.0\SampleLibrary.pdb
+C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\bin\Debug\net6.0\SampleLibrary.deps.json
+C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\bin\Debug\net6.0\SampleLibrary.dll
+C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\bin\Debug\net6.0\ref\SampleLibrary.dll
+C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\bin\Debug\net6.0\SampleLibrary.pdb
+C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\obj\Debug\net6.0\SampleLibrary.csproj.AssemblyReference.cache
+C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\obj\Debug\net6.0\SampleLibrary.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\obj\Debug\net6.0\SampleLibrary.AssemblyInfoInputs.cache
+C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\obj\Debug\net6.0\SampleLibrary.AssemblyInfo.cs
+C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\obj\Debug\net6.0\SampleLibrary.csproj.CoreCompileInputs.cache
+C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\obj\Debug\net6.0\SampleLibrary.dll
+C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\obj\Debug\net6.0\ref\SampleLibrary.dll
+C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\searchProject_csharp\SampleLibrary\SampleLibrary\obj\Debug\net6.0\SampleLibrary.pdb

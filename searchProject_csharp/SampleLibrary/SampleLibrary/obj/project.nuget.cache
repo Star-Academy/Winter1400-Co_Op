@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "JJ7zAlwNk+PN+aYxo4J7URS0hAyGSyx0EXnLPFUEocb7vQSyp8zay3a4Ize17uegQiLfC0xr5v560JcekCid5A==",
+  "dgSpecHash": "xtLILZ0GJqcFQOjmMkqvq2ZUAgix/ObxQa99iXxxdFSRuFSeAcxr27wSRmF/Mf4EWFjLE+dNaFyRTKgQqoTwkQ==",
   "success": true,
-  "projectFilePath": "F:\\moh\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\SampleLibrary.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\Alireza\\Desktop\\mohProject\\Winter1400-Co_Op\\searchProject_csharp\\SampleLibrary\\SampleLibrary\\SampleLibrary.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Alireza\\.nuget\\packages\\fluentassertions\\6.5.1\\fluentassertions.6.5.1.nupkg.sha512",
+    "C:\\Users\\Alireza\\.nuget\\packages\\system.configuration.configurationmanager\\4.4.0\\system.configuration.configurationmanager.4.4.0.nupkg.sha512",
+    "C:\\Users\\Alireza\\.nuget\\packages\\system.security.cryptography.protecteddata\\4.4.0\\system.security.cryptography.protecteddata.4.4.0.nupkg.sha512"
+  ],
   "logs": []
 }
