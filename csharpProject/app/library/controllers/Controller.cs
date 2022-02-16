@@ -13,7 +13,7 @@ public class Controller : IController
         
         var informationOfStudents = 
             ConvertListToDictionary<int, StudentInformation>
-            (deserializedInformationOfStudents, s => s.studentNumber);
+            (deserializedInformationOfStudents, s => s.StudentNumber);
 
         AddScoresToInformationOfStudents
             (informationOfStudents, deserizlizedInformationOfScores);
@@ -35,7 +35,7 @@ public class Controller : IController
     {
         foreach (var score in scoreInformation)
         {
-            studentInformation[score.studentNumber].AddScore(score.score);
+            studentInformation[score.StudentNumber].AddScore(score.Score);
         }
     }
 
@@ -50,9 +50,9 @@ public class Controller : IController
         (List <StudentInformation> information){
         
         return information.OrderByDescending
-        (s => s.average).Take(3).Select(information => 
-        $"{information.firstName} {information.lastName}" +
-        $" : {information.average}").ToList();
+        (s => s.Average).Take(3).Select(information => 
+        $"{information.FirstName} {information.LastName}" +
+        $" : {information.Average}").ToList();
     }
 
 }
