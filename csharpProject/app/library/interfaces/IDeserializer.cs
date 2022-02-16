@@ -2,5 +2,5 @@ namespace library.interfaces;
 
 public interface IDeserializer<T>
 {
-    public List<T> DeserializeArray (string serialized);
+     List<T> DeserializeArray (string serialized);
 }
