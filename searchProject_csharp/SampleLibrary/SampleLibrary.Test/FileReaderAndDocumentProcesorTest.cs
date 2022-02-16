@@ -9,6 +9,7 @@ public class FileReaderAndDocumentProcessorTest
 {
     private string _foldersPath = 
         @"f:/moh/Winter1400-Co_Op/searchProject_csharp/files";
+    
     [Fact]
     public void TestImportFiles()
     {
