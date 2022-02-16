@@ -1,8 +1,9 @@
 namespace library;
 using library.interfaces;
+using System.IO;
 
 public class FileReader : IReader
 {
     public string path {set; get;}
-    public string Read() => System.IO.File.ReadAllText(path);
+    public string Read() => File.ReadAllText(path);
 }
