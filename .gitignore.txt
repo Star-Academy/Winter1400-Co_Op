@@ -1,7 +1,0 @@
-/out/
-.idea
-files
-*.iml
-.vscode
-bin
-obj
