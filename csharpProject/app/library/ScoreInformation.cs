@@ -1,9 +1,8 @@
-namespace library
+namespace library.models;
+
+public class ScoreInformation
 {
-    public class ScoreInformation
-    {
-        public float score {set; get;}
-        public int studentNumber {set; get;}
-        public string lesson{set; get;}
-    }
+    public float score {set; get;}
+    public int studentNumber {set; get;}
+    public string lesson{set; get;}
 }
