@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using Xunit;
 using SampleLibrary;
 using System.IO;
@@ -31,4 +32,20 @@ public class UnitTest1
         Assert.False(fileReader.readDataFromFile(falsePath,falseName));
     }
 
+=======
+using Xunit;
+
+namespace SampleLibrary.Test;
+
+public class UnitTest1
+{
+
+    
+    [Fact]
+    public void Test1()
+    {
+
+
+    }
+>>>>>>> 5e18e803773eeab62cd9e799cce4c01466046472
 }
