@@ -1,4 +1,4 @@
-namespace SampleLibrary;
+namespace SampleLibrary{
 
 public class HashSetOperators
 {
@@ -19,4 +19,5 @@ public class HashSetOperators
     public static HashSet<int> Or (List<HashSet<int>> hashSets){
         return hashSets.SelectMany(set => set).ToHashSet();
     }
+}
 }

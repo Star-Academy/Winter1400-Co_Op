@@ -1,7 +1,4 @@
 using System.Text.RegularExpressions;
-{
-    
-}
 namespace SampleLibrary
 {
     public class DocumentProcessor
@@ -47,12 +44,12 @@ namespace SampleLibrary
         }
         private string[] stemSplitData(string[] splittedData){
             for(int i = 0; i < splittedData.Length; i++){
-                splittedData[i] = stemmer.stemWord(splittedData[i]);
+                splittedData[i] = stemmer.StemWord(splittedData[i]);
             }
             return splittedData;
         }
         private string[] splitData(){
-            return data.Split("\\s+");
+            return data.Split(" ");
         }
 
     }

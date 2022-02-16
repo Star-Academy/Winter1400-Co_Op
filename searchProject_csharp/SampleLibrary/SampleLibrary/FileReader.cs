@@ -25,12 +25,17 @@ namespace SampleLibrary
             }
         }
         public Boolean readDataFromFile(string path,string name){
+            try{
             string data = readContents(path);
             if(!isFileFound(data))
               return false;
             string[] words = processDataAndGiveWords(data);
             storeWords(words,name);
             return true;
+            }
+            catch(FileNotFoundException){
+                return false;
+            }
 
         }
         private void storeWords(string[] words,string fileName){
@@ -63,6 +68,11 @@ namespace SampleLibrary
             DocumentProcessor documentProcessor = new DocumentProcessor(data);
             return documentProcessor.getNormalizedWords();
 
+        }
+        public Dictionary<string,HashSet<int>> getIndexes(){
+            FileInfo[] files = getAddressOfFiles();
+            readFiles(files);
+            return indexes;
         }
     }
 }
