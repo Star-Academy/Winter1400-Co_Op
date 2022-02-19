@@ -4,9 +4,53 @@ namespace SampleLibrary.Test;
 
 public class QueriesTest
 {
+
+    [Fact]
+    public void TestZeroQueries(){
+
+        Queries queries = new Queries
+         ("bozorgmehr ali reza +alireza +mohammad -farsh");
+
+        var expectedZeroQueries = new List<string>(){
+            "bozorgmehr",
+            "ali",
+            "reza"
+        };
+
+        Assert.Equal(queries.zeroQueries, expectedZeroQueries);
+    }
+
+    [Fact]
+    public void TestPlusQueries(){
+
+        Queries queries = new Queries
+         ("one two three treee +ali +alii +aliii -aliiii");
+
+        var expectedPlusQueries = new List<string>(){
+            "ali",
+            "alii",
+            "aliii"
+        };
+
+        Assert.Equal(queries.plusQueries, expectedPlusQueries);
+    }
+
+    [Fact]
+    public void TestMinusQueries(){
+
+        Queries queries = new Queries
+         ("one two three tree +ali +khalafi -farshi -zia");
+
+        var expectedMinusQueries = new List<string>(){
+            "farshi",
+            "zia"
+        };
+
+        Assert.Equal(queries.minusQueries, expectedMinusQueries);
+    }
     
     [Fact]
-    public void test(){
+    public void Test(){
         Queries queries = new Queries
          ("one two three +four +five -six -seven -eight -nine");
         var expectedZeroQueries = new List<string>();
