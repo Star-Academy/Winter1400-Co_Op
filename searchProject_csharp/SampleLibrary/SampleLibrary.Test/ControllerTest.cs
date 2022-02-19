@@ -4,9 +4,9 @@ namespace SampleLibrary.Test;
 
 public class ControllerTest
     {
-    private Dictionary<string, HashSet<int>> dictionary;
-    private HashSet<int> set1, set2, set3, set4;
-    private Controller controller;
+    private readonly Dictionary<string, HashSet<int>> dictionary;
+    private readonly HashSet<int> set1, set2, set3, set4;
+    private readonly Controller controller;
 
 
     public ControllerTest(){
