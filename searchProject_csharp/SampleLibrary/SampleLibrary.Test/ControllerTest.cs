@@ -1,5 +1,6 @@
 using Xunit;
 using System.Collections.Generic;
+using Moq;
 namespace SampleLibrary.Test;
 
 public class ControllerTest
@@ -23,8 +24,9 @@ public class ControllerTest
             {"four", set4}
         };
 
-        controller = new Controller
-            (new DummyFileReader(){TempDictionary = dictionary});
+        var dummyFileReader = new Mock<IFileReader>();
+        dummyFileReader.Setup(p => p.GetIndexes()).Returns(dictionary);
+        controller = new Controller(dummyFileReader.Object);
     }
 
     public void CheckExpectedAnswer (HashSet<int> expectedAnswer){

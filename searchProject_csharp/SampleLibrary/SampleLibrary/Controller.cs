@@ -5,25 +5,27 @@ namespace SampleLibrary
     public class Controller
     {
         public Queries Query{set; get;}
+        private HashSetOperators _hashSetOperators;
         private Dictionary<string, HashSet<int>> _dictionary;
         public Controller(IFileReader fileReader){
             _dictionary = fileReader.GetIndexes();
+            _hashSetOperators = new();
         }
 
         public HashSet<int> GetFileIdsMatchZeroAndPlusAndMinusQueries()
         {
 
-            var fileIDsMatchZeroQueries = HashSetOperators.And(
+            var fileIDsMatchZeroQueries = _hashSetOperators.And(
                 GetHashSetsOfListOfQueries(Query.zeroQueries));
 
-            var fileIDsMatchPlusQueries = HashSetOperators.Or(
+            var fileIDsMatchPlusQueries = _hashSetOperators.Or(
                 GetHashSetsOfListOfQueries(Query.plusQueries));
 
-            var fileIDsMatchMinusQueries = HashSetOperators.Or(
+            var fileIDsMatchMinusQueries = _hashSetOperators.Or(
                 GetHashSetsOfListOfQueries(Query.minusQueries));
 
 
-            return HashSetOperators.Sub(
+            return _hashSetOperators.Sub(
                 GetFileIdsMatchZeroAndPlusQueries
                     (fileIDsMatchZeroQueries,fileIDsMatchPlusQueries), 
                         fileIDsMatchMinusQueries);
@@ -43,12 +45,12 @@ namespace SampleLibrary
         private HashSet<int> GetFileIdsMatchZeroAndPlusQueries
          (HashSet<int>zeroHashSet, HashSet<int>plusHashSet)
         {
-            var fileIDsMatchZeroAndPlusQueries = HashSetOperators.And
+            var fileIDsMatchZeroAndPlusQueries = _hashSetOperators.And
              (new List<HashSet<int>> {zeroHashSet, plusHashSet});
             
             if (zeroHashSet.Count() == 0 || plusHashSet.Count() == 0)
             {
-                fileIDsMatchZeroAndPlusQueries = HashSetOperators.Or
+                fileIDsMatchZeroAndPlusQueries = _hashSetOperators.Or
                  (new List<HashSet<int>>{zeroHashSet, plusHashSet});
             }
             return fileIDsMatchZeroAndPlusQueries;
