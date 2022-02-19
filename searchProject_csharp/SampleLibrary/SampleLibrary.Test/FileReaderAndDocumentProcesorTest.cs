@@ -7,8 +7,9 @@ namespace SampleLibrary.Test;
 
 public class FileReaderAndDocumentProcessorTest
 {
+    //Files (in local) are in Winter1400-Co_Op/searchProject_csharp/files
     private string _foldersPath = 
-        @"C:\Users\Alireza\Desktop\mohProject\Winter1400-Co_Op\searchProject_csharp\files";
+        @"../../../../../files";
     
     [Fact]
     public void TestImportFiles()
