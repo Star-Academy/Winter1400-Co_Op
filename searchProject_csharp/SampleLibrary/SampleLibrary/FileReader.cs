@@ -3,74 +3,33 @@ namespace SampleLibrary
     public class FileReader : IFileReader
     {
 
-        private string _path;
-        private Dictionary<string,HashSet<int>> indexes = new Dictionary<string, HashSet<int>>();
+        private readonly string _path;
+        
+
         public FileReader(string path){
             _path = path;
         }
 
 
         public FileInfo[] getAddressOfFiles(){
-            DirectoryInfo di = new DirectoryInfo(_path);
-            FileInfo[] fileInfos = di.GetFiles();
-            return fileInfos;
-            
-
-
+            var directoryInfo = new DirectoryInfo(_path);
+            return directoryInfo.GetFiles();       
         }
-        private void readFiles(FileInfo[] fileInfos){
-            foreach(FileInfo fileInfo in fileInfos){
-                readDataFromFile(fileInfo.FullName,fileInfo.Name);
-
-            }
+        private Dictionary<string,string> readFiles(FileInfo[] fileInfos){
+            return fileInfos.Where(file=> file != null).ToDictionary(file=> file.Name,file => readDataFromFile(file.FullName,file.Name));
         }
-        public Boolean readDataFromFile(string path,string name){
+        public string readDataFromFile(string path,string name){
             try{
-            string data = readContents(path);
-            if(!isFileFound(data))
-              return false;
-            string[] words = processDataAndGiveWords(data);
-            storeWords(words,name);
-            return true;
+                return File.ReadAllText(path);
             }
             catch(FileNotFoundException){
-                return false;
+                return null;
             }
-
-        }
-        private void storeWords(string[] words,string fileName){
-            for(int i = 0; i < words.Length; i++){
-                HashSet<int> fileIds = computeIfAbsent(words[i]);
-                fileIds.Add(Convert.ToInt32(fileName));      
-            }
-        }
-        private HashSet<int> computeIfAbsent(string word){
-            HashSet<int> fileIds;
-            bool exist = indexes.TryGetValue(word,out fileIds);
-            if(exist)
-            return fileIds;
-            fileIds = new HashSet<int>();
-            indexes.Add(word,fileIds);
-            return fileIds;
-        }
-        private string readContents(string path){
-            string data = File.ReadAllText(path);
-            return data;
-
-        }
-        private Boolean isFileFound(string data){
-            return data != null;
-        }
-        
-        public string[] processDataAndGiveWords(string data){
-            DocumentProcessor documentProcessor = new DocumentProcessor(data);
-            return documentProcessor.getNormalizedWords();
-
-        }
-        public Dictionary<string,HashSet<int>> GetIndexes(){
+        }      
+           
+        public Dictionary<string,string> GetContentsOfFiles(){
             FileInfo[] files = getAddressOfFiles();
-            readFiles(files);
-            return indexes;
+            return readFiles(files);      
         }
     }
 }

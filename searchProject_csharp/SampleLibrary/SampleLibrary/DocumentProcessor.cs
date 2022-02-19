@@ -3,43 +3,32 @@ namespace SampleLibrary
 {
     public class DocumentProcessor
     {
-        private string data;
+        private  string data;
         private static readonly Stemmer stemmer = new Stemmer();
         public DocumentProcessor(string data){
-            this.data = data;
+             if(data == null)
+             throw new Exception("data is null");
+             this.data = data.ToLower();        
         }
         public string[] getNormalizedWords(){
-            toLowerCase();
             removeSigns();
             return toStemSplit();
-
         }
-        private void toLowerCase(){
-            if(data == null)
-            return;
-            else
-            data = data.ToLower();
-
-        }
+       
         private void removeSigns(){
-            if(data == null)
-            return;
-            removeDashes();
-            removeNonNumericalSigns();
+           removeDashes();
+           removeNonNumericalSigns();
         }
         private void removeDashes(){
             Regex regex = new Regex("[-?]+");
             data = regex.Replace(data," ");
-
         }
         private void removeNonNumericalSigns(){
             Regex regex = new Regex("[^a-zA-Z0-9\\s]+");
             data = regex.Replace(data," ");
         }
         private string[] toStemSplit(){
-            if(data == null)
-            return new string[0];
-            string[] splittedData = splitData();
+            var splittedData = data.Split(" ");
             return stemSplitData(splittedData);
         }
         private string[] stemSplitData(string[] splittedData){
@@ -48,10 +37,5 @@ namespace SampleLibrary
             }
             return splittedData;
         }
-        private string[] splitData(){
-            return data.Split(" ");
-        }
-
     }
-
 }

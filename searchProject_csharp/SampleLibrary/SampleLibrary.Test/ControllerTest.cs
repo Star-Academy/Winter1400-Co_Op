@@ -24,14 +24,16 @@ public class ControllerTest
             {"four", _set4}
         };
 
-        var dummyFileReader = new Mock<IFileReader>();
-        dummyFileReader.Setup(p => p.GetIndexes()).Returns(_dictionary);
-        _controller = new Controller(dummyFileReader.Object);
+       // var dummyFileReader = new Mock<IFileReader>();
+       // dummyFileReader.Setup(p => p.GetContentsOfFiles()).Returns(_dictionary);
+       // _controller = new Controller(dummyFileReader.Object);
+       _controller = new Controller();
+
     }
 
     public void CheckExpectedAnswer (HashSet<int> expectedAnswer){
         var realAnswer = _controller.
-            GetFileIdsMatchZeroAndPlusAndMinusQueries();
+            GetFileIdsMatchZeroAndPlusAndMinusQueries(_dictionary);
 
         Assert.Equal(expectedAnswer, realAnswer);
     }

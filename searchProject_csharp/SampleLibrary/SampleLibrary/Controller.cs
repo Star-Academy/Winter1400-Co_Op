@@ -6,23 +6,31 @@ namespace SampleLibrary
     {
         public Queries Query{set; get;}
         private HashSetOperators _hashSetOperators;
-        private Dictionary<string, HashSet<int>> _dictionary;
-        public Controller(IFileReader fileReader){
-            _dictionary = fileReader.GetIndexes();
+       // private Dictionary<string, HashSet<int>> _dictionary;
+        public Controller(){
+           //  foreach(var item in dict){
+           //    var words = ProcessDataAndGiveWords(item.Value);
+             //  StoreWords(words,item.Key);
+               
+         //    }
             _hashSetOperators = new();
         }
 
-        public HashSet<int> GetFileIdsMatchZeroAndPlusAndMinusQueries()
+        public Dictionary<string,string> ReadData(IFileReader fileReader){
+            return fileReader.GetContentsOfFiles();
+        }
+
+        public HashSet<int> GetFileIdsMatchZeroAndPlusAndMinusQueries(Dictionary<string,HashSet<int>> dict)
         {
 
             var fileIDsMatchZeroQueries = _hashSetOperators.And(
-                GetHashSetsOfListOfQueries(Query.zeroQueries));
+                GetHashSetsOfListOfQueries(dict,Query.zeroQueries));
 
             var fileIDsMatchPlusQueries = _hashSetOperators.Or(
-                GetHashSetsOfListOfQueries(Query.plusQueries));
+                GetHashSetsOfListOfQueries(dict,Query.plusQueries));
 
             var fileIDsMatchMinusQueries = _hashSetOperators.Or(
-                GetHashSetsOfListOfQueries(Query.minusQueries));
+                GetHashSetsOfListOfQueries(dict,Query.minusQueries));
 
 
             return _hashSetOperators.Sub(
@@ -30,7 +38,7 @@ namespace SampleLibrary
                     (fileIDsMatchZeroQueries,fileIDsMatchPlusQueries), 
                         fileIDsMatchMinusQueries);
         }
-        private List<HashSet<int>> GetHashSetsOfListOfQueries(List<string> queries){
+        private List<HashSet<int>> GetHashSetsOfListOfQueries(Dictionary<string,HashSet<int>> _dictionary,List<string> queries){
             return queries.Select(query =>
                 {
                     if(!_dictionary.ContainsKey(query))
@@ -55,5 +63,18 @@ namespace SampleLibrary
             }
             return fileIDsMatchZeroAndPlusQueries;
         }
+        private string[] ProcessDataAndGiveWords(string data){
+            try{
+             DocumentProcessor documentProcessor = new DocumentProcessor(data);
+             return documentProcessor.getNormalizedWords();
+             }
+             catch(Exception e){
+                 return null;
+             }
+        }
+        public void Store(string[] words, string fileName){
+            ContentSaver contentSaver = new ContentSaver();
+            contentSaver.StoreWords(words,fileName);
+        }       
     }
 }
