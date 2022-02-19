@@ -37,7 +37,7 @@ public class ControllerTest
     }
 
     [Fact]
-    public void Test1(){
+    public void TestZeroQueries1(){
         _controller.Query = new Queries("one");
 
         var expectedAnswer = new HashSet<int>(){1, 2, 3};
@@ -46,7 +46,7 @@ public class ControllerTest
     }
 
     [Fact]
-    public void Test2(){
+    public void TestZeroQueries2(){
         _controller.Query = (new Queries("one four"));
 
         var expectedAnswer = new HashSet<int>(){1, 2};
@@ -55,7 +55,7 @@ public class ControllerTest
     }
 
     [Fact]
-    public void Test3(){
+    public void TestZeroAndMinusQueries1(){
         _controller.Query = new Queries("one -three");
 
         var expectedAnswer = new HashSet<int>(){1, 3};
@@ -64,7 +64,7 @@ public class ControllerTest
     }
 
     [Fact]
-    public void Test4(){
+    public void TestZeroQueries3(){
         _controller.Query = new Queries("two five");
 
         var expectedAnswer = new HashSet<int>();
@@ -73,7 +73,7 @@ public class ControllerTest
     }
 
     [Fact]
-    public void Test5(){
+    public void TestPlusQueries(){
         _controller.Query = new Queries("+two +four");
 
         var expectedAnswer = new HashSet<int>(){1, 2, 4, 5, 7};
@@ -82,7 +82,7 @@ public class ControllerTest
     }
 
     [Fact]
-    public void Test6(){
+    public void TestMinusAndPlusQueries(){
         _controller.Query = new Queries("+two -four");
 
         var expectedAnswer = new HashSet<int>(){4, 5};
@@ -91,7 +91,7 @@ public class ControllerTest
     }
 
     [Fact]
-    public void Test7(){
+    public void TestZeroAndPlusQueries(){
         _controller.Query = new Queries("one two +four");
 
         var expectedAnswer = new HashSet<int>(){1};
