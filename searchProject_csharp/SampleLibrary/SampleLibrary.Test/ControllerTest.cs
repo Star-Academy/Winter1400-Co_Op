@@ -4,29 +4,31 @@ namespace SampleLibrary.Test;
 
 public class ControllerTest
     {
-    Dictionary<string, HashSet<int>> dictionary = new ();
-    HashSet<int> set1, set2, set3, set4;
-    Controller controller;
+    private Dictionary<string, HashSet<int>> dictionary;
+    private HashSet<int> set1, set2, set3, set4;
+    private Controller controller;
 
 
     public ControllerTest(){
 
-        set1 = new HashSet<int>(){1, 2, 3};
-        set2 = new HashSet<int>(){1, 4, 5};
-        set3 = new HashSet<int>(){2, 6, 7};
-        set4 = new HashSet<int>(){1, 2, 7};
+        set1 = new (){1, 2, 3};
+        set2 = new (){1, 4, 5};
+        set3 = new (){2, 6, 7};
+        set4 = new (){1, 2, 7};
 
-        dictionary.Add("one", set1);
-        dictionary.Add("two", set2);
-        dictionary.Add("three", set3);
-        dictionary.Add("four", set4);
+        dictionary = new(){
+            {"one", set1},
+            {"two", set2},
+            {"three", set3},
+            {"four", set4}
+        };
 
         controller = new Controller
             (new DummyFileReader(){TempDictionary = dictionary});
     }
 
     public void CheckExpectedAnswer (HashSet<int> expectedAnswer){
-        HashSet<int> realAnswer = controller.
+        var realAnswer = controller.
             GetFileIdsMatchZeroAndPlusAndMinusQueries();
 
         Assert.Equal(expectedAnswer, realAnswer);
