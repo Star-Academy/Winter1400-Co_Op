@@ -13,12 +13,12 @@ public class Controller
         return queryManager.GetFileIdsMatchZeroAndPlusAndMinusQueries(indexes);
     }
 
-    private Dictionary<string,string> ReadData(string path)
+    public Dictionary<string,string> ReadData(string path)
     {
         return new FileReader(path).GetContentsOfFiles();
     }
 
-    private Dictionary<string, HashSet<int>> GetIndexes
+    public Dictionary<string, HashSet<int>> GetIndexes
         (Dictionary<string, string> data){
 
         var contentSaver = new ContentSaver();

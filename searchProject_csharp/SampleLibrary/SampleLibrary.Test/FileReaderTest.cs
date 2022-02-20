@@ -37,34 +37,30 @@ public class FileReaderTest
         Assert.Null(fileReader.readDataFromFile(falsePath,falseName));
     }
 
-    // [Fact]
-    // public void TestProcessData(){
-    //     string data = "I am looking for publically accessible sources of" + 
-    //         " data depicting braiand neuron functions.";
+     [Fact]
+     public void TestProcessData(){
+         string data = "I am looking for publically accessible sources of" + 
+             " data depicting braiand neuron functions.";
+         DocumentProcessor documentProcessor = new DocumentProcessor(data);
+         string[] words = documentProcessor.getNormalizedWords();
+         string[] expected = new string[]{"i","am","look","for",
+             "public","access","sourc","of","data","depict","braiand",
+             "neuron","function"};
+         for(int i = 0; i < expected.Length;i++){
+             Assert.Equal(expected[i],words[i]);
+         }
+     }
 
-    //     var contentSaver = new ContentSaver();
-        
-    //     var result = fileReader.processDataAndGiveWords(data);
-    //     string[] expected = new string[]{"i","am","look","for",
-    //         "public","access","sourc","of","data","depict","braiand",
-    //         "neuron","function"};
-
-    //     for(int i = 0; i < expected.Length;i++){
-    //         Assert.Equal(expected[i],result[i]);
-    //     }
-    // }
-/*
     [Fact]
     public void TestPuttingWordsInHashMap(){
-        FileReader fileReader = new FileReader(_foldersPath);
-        Dictionary <string,string> result = fileReader.GetContentsOfFiles();
-       // List<int> list = new List<int>{58913,58569,58578,58886,
-       //     58912,58940,58965,59007,59105,59144,59183};
-        
-       // HashSet<int> expected = new HashSet<int>(list);
+        Controller controller = new Controller();
+        Dictionary<string,string> data =  controller.ReadData(foldersPath);
+        Dictionary<string,HashSet<int>> result = controller.GetIndexes(data);
+        List<int> list = new List<int>{58913,58569,58578,58886,
+            58912,58940,58965,59007,59105,59144,59183};
+        HashSet<int> expected = new HashSet<int>(list);
         bool x = result.TryGetValue("remind",out HashSet<int> y);
-
-        Assert.Equal(,result["57110"]);
-    }*/
+        Assert.Equal(expected,y);
+    }
 
 }

@@ -9,8 +9,9 @@ namespace SampleLibrary
         {
             if(data == null)
                 throw new Exception("data is null");
+            this.data = data.ToLower();
             
-            this.data = data.ToLower();        
+                   
         }
         public string[] getNormalizedWords()
         {
