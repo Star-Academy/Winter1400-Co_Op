@@ -2,28 +2,28 @@ namespace SampleLibrary
 {
     public class ContentSaver
     {
-         private readonly static Dictionary<string,HashSet<int>> indexes = new Dictionary<string, HashSet<int>>();
+        private readonly Dictionary<string,HashSet<int>> indexes = 
+            new Dictionary<string, HashSet<int>>();
 
+        public void StoreWords(string [] words,string fileName){
+            for(int i = 0; i < words.Length; i++){
+                HashSet<int> fileIds = ComputeIfAbsent(words[i]);
+                fileIds.Add(Convert.ToInt32(fileName));
+            }
+        }
 
-         public void StoreWords(string [] words,string fileName){
-             for(int i = 0; i < words.Length; i++){
-                 HashSet<int> fileIds = ComputeIfAbsent(words[i]);
-                 fileIds.Add(Convert.ToInt32(fileName));
-             }
-
-         }
-         private HashSet<int> ComputeIfAbsent(string word){
-             HashSet<int> fileIds;
-             bool exist = indexes.TryGetValue(word,out fileIds);
-             if(exist)
-               return fileIds;
-            fileIds = new HashSet<int>();
-            indexes.Add(word,fileIds);
+        private HashSet<int> ComputeIfAbsent(string word){
+            HashSet<int> fileIds;
+            bool exist = indexes.TryGetValue(word,out fileIds);
+            if(exist)
             return fileIds;
-         }
-         public static Dictionary<string,HashSet<int>> getIndexes(){
-             return indexes;
-         }
+        fileIds = new HashSet<int>();
+        indexes.Add(word,fileIds);
+        return fileIds;
+        }
+        public Dictionary<string,HashSet<int>> getIndexes(){
+            return indexes;
+        }
                  
     }
 }
