@@ -3,7 +3,7 @@ namespace SampleLibrary
 {
     public class DocumentProcessor
     {
-        private  string data;
+        private readonly string data;
         private static readonly Stemmer stemmer = new Stemmer();
         public DocumentProcessor(string data){
              if(data == null)
@@ -11,24 +11,26 @@ namespace SampleLibrary
              this.data = data.ToLower();        
         }
         public string[] getNormalizedWords(){
-            removeSigns();
-            return toStemSplit();
+            string temp = removeSigns();
+            return toStemSplit(temp);
         }
        
-        private void removeSigns(){
-           removeDashes();
-           removeNonNumericalSigns();
+        private string removeSigns(){
+          string temp =  removeDashes();
+          return removeNonNumericalSigns(temp);
+          
         }
-        private void removeDashes(){
+        private string removeDashes(){
             Regex regex = new Regex("[-?]+");
-            data = regex.Replace(data," ");
+            return regex.Replace(data," ");
+            
         }
-        private void removeNonNumericalSigns(){
+        private string removeNonNumericalSigns(string temp){
             Regex regex = new Regex("[^a-zA-Z0-9\\s]+");
-            data = regex.Replace(data," ");
+            return regex.Replace(temp," ");
         }
-        private string[] toStemSplit(){
-            var splittedData = data.Split(" ");
+        private string[] toStemSplit(string temp){
+            var splittedData = temp.Split(" ");
             return stemSplitData(splittedData);
         }
         private string[] stemSplitData(string[] splittedData){
