@@ -8,7 +8,7 @@ public class QueriesTest
     [Fact]
     public void TestZeroQueries(){
 
-        Queries queries = new Queries
+        var queries = new Queries
          ("bozorgmehr ali reza +alireza +mohammad -farsh");
 
         var expectedZeroQueries = new List<string>(){
@@ -23,7 +23,7 @@ public class QueriesTest
     [Fact]
     public void TestPlusQueries(){
 
-        Queries queries = new Queries
+        var queries = new Queries
          ("one two three treee +ali +alii +aliii -aliiii");
 
         var expectedPlusQueries = new List<string>(){
@@ -38,7 +38,7 @@ public class QueriesTest
     [Fact]
     public void TestMinusQueries(){
 
-        Queries queries = new Queries
+        var queries = new Queries
          ("one two three tree +ali +khalafi -farshi -zia");
 
         var expectedMinusQueries = new List<string>(){
@@ -51,8 +51,9 @@ public class QueriesTest
     
     [Fact]
     public void Test(){
-        Queries queries = new Queries
-         ("one two three +four +five -six -seven -eight -nine");
+        var queries = new Queries
+            ("one two three +four +five -six -seven -eight -nine");
+        
         var expectedZeroQueries = new List<string>();
         expectedZeroQueries.Add("one");
         expectedZeroQueries.Add("two");

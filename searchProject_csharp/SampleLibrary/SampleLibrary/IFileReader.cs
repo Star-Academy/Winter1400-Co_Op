@@ -2,6 +2,6 @@ namespace SampleLibrary
 {
     public interface IFileReader
     {
-         public Dictionary<string,string> GetContentsOfFiles ();
+        public Dictionary<string,string> GetContentsOfFiles ();
     }
 }

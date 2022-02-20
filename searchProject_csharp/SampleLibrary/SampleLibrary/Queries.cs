@@ -12,7 +12,6 @@ namespace SampleLibrary
             }
         }
 
-
         private void AddWordToQuery(string word){
 
             if (word.StartsWith("+"))

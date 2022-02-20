@@ -3,44 +3,41 @@ using System.Collections.Generic;
 using Moq;
 namespace SampleLibrary.Test;
 
-public class ControllerTest
+public class QueryManagerTest
 {
-    private readonly Dictionary<string, HashSet<int>> _dictionary;
-    private readonly HashSet<int> _set1, _set2, _set3, _set4;
-    private readonly Controller _controller;
+    private readonly Dictionary<string, HashSet<int>> dictionary;
+    private readonly HashSet<int> set1, set2, set3, set4;
+    private readonly QueryManager queryManager;
 
 
-    public ControllerTest(){
+    public QueryManagerTest(){
 
-        _set1 = new (){1, 2, 3};
-        _set2 = new (){1, 4, 5};
-        _set3 = new (){2, 6, 7};
-        _set4 = new (){1, 2, 7};
+        set1 = new (){1, 2, 3};
+        set2 = new (){1, 4, 5};
+        set3 = new (){2, 6, 7};
+        set4 = new (){1, 2, 7};
 
-        _dictionary = new(){
-            {"one", _set1},
-            {"two", _set2},
-            {"three", _set3},
-            {"four", _set4}
+        dictionary = new(){
+            {"one", set1},
+            {"two", set2},
+            {"three", set3},
+            {"four", set4}
         };
 
-       // var dummyFileReader = new Mock<IFileReader>();
-       // dummyFileReader.Setup(p => p.GetContentsOfFiles()).Returns(_dictionary);
-       // _controller = new Controller(dummyFileReader.Object);
-       _controller = new Controller();
+       queryManager = new QueryManager();
 
     }
 
     public void CheckExpectedAnswer (HashSet<int> expectedAnswer){
-        var realAnswer = _controller.
-            GetFileIdsMatchZeroAndPlusAndMinusQueries(_dictionary);
+        var realAnswer = queryManager.
+            GetFileIdsMatchZeroAndPlusAndMinusQueries(dictionary);
 
         Assert.Equal(expectedAnswer, realAnswer);
     }
 
     [Fact]
     public void TestZeroQueries1(){
-        _controller.Query = new Queries("one");
+        queryManager.Query = "one";
 
         var expectedAnswer = new HashSet<int>(){1, 2, 3};
 
@@ -49,7 +46,7 @@ public class ControllerTest
 
     [Fact]
     public void TestZeroQueries2(){
-        _controller.Query = (new Queries("one four"));
+        queryManager.Query = "one four";
 
         var expectedAnswer = new HashSet<int>(){1, 2};
 
@@ -58,7 +55,7 @@ public class ControllerTest
 
     [Fact]
     public void TestZeroAndMinusQueries1(){
-        _controller.Query = new Queries("one -three");
+        queryManager.Query = "one -three";
 
         var expectedAnswer = new HashSet<int>(){1, 3};
 
@@ -67,7 +64,7 @@ public class ControllerTest
 
     [Fact]
     public void TestZeroQueries3(){
-        _controller.Query = new Queries("two five");
+        queryManager.Query = "two five";
 
         var expectedAnswer = new HashSet<int>();
 
@@ -76,7 +73,7 @@ public class ControllerTest
 
     [Fact]
     public void TestPlusQueries(){
-        _controller.Query = new Queries("+two +four");
+        queryManager.Query = "+two +four";
 
         var expectedAnswer = new HashSet<int>(){1, 2, 4, 5, 7};
 
@@ -85,7 +82,7 @@ public class ControllerTest
 
     [Fact]
     public void TestMinusAndPlusQueries(){
-        _controller.Query = new Queries("+two -four");
+        queryManager.Query = "+two -four";
 
         var expectedAnswer = new HashSet<int>(){4, 5};
 
@@ -94,7 +91,7 @@ public class ControllerTest
 
     [Fact]
     public void TestZeroAndPlusQueries(){
-        _controller.Query = new Queries("one two +four");
+        queryManager.Query = "one two +four";
 
         var expectedAnswer = new HashSet<int>(){1};
         
