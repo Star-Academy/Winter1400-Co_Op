@@ -16,6 +16,16 @@ namespace SampleLibrary
             _hashSetOperators = new();
         }
 
+        public void Run(){
+            string path = @"../../../../../files";
+            FileReader fileReader = new FileReader(path);
+            Dictionary<string,string> dataOfFiles =  ReadData(fileReader);
+            foreach(var item in dataOfFiles){
+                string[] words = ProcessDataAndGiveWords(item.Value);
+                Store(words,item.Key);
+            }
+        }
+
         public Dictionary<string,string> ReadData(IFileReader fileReader){
             return fileReader.GetContentsOfFiles();
         }

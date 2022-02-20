@@ -2,7 +2,7 @@ namespace SampleLibrary
 {
     public class ContentSaver
     {
-         private readonly Dictionary<string,HashSet<int>> indexes = new Dictionary<string, HashSet<int>>();
+         private readonly static Dictionary<string,HashSet<int>> indexes = new Dictionary<string, HashSet<int>>();
 
 
          public void StoreWords(string [] words,string fileName){
@@ -21,7 +21,7 @@ namespace SampleLibrary
             indexes.Add(word,fileIds);
             return fileIds;
          }
-         public Dictionary<string,HashSet<int>> getIndexes(){
+         public static Dictionary<string,HashSet<int>> getIndexes(){
              return indexes;
          }
                  
