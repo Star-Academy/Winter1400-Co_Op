@@ -7,11 +7,7 @@ namespace SampleLibrary
         private static readonly Stemmer stemmer = new Stemmer();
         public DocumentProcessor(string data)
         {
-            if(data == null)
-                throw new Exception("data is null");
-            this.data = data.ToLower();
-            
-                   
+            this.data = data.ToLower() ?? throw new Exception("data is null");
         }
         public string[] getNormalizedWords()
         {
@@ -43,11 +39,7 @@ namespace SampleLibrary
 
         private string[] stemSplitData(string[] splittedData)
         {
-            for(int i = 0; i < splittedData.Length; i++)
-            {
-                splittedData[i] = stemmer.StemWord(splittedData[i]);
-            }
-            return splittedData;
+            return splittedData.Select(p => stemmer.StemWord(p)).ToArray();
         }
 
     }

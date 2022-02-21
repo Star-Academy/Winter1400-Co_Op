@@ -17,7 +17,7 @@ namespace SampleLibrary
         {
             for(int i = 0; i < words.Length; i++)
             {
-                HashSet<int> fileIds = ComputeIfAbsent(words[i]);
+                var fileIds = ComputeIfAbsent(words[i]);
                 fileIds.Add(Convert.ToInt32(fileName));
             }
         }
