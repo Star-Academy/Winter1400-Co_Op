@@ -39,9 +39,12 @@ public class Controller
         {
             return new DocumentProcessor(data).getNormalizedWords();
         }
-        catch(Exception)
+        catch(DataIsNullException ex)
         {
+            Console.WriteLine(ex.Message);
             return null;
         }
     }
 }
+
+

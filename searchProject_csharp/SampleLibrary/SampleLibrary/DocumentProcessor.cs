@@ -1,13 +1,14 @@
 using System.Text.RegularExpressions;
 namespace SampleLibrary
 {
+
     public class DocumentProcessor
     {
         private readonly string data;
         private static readonly Stemmer stemmer = new Stemmer();
         public DocumentProcessor(string data)
         {
-            this.data = data.ToLower() ?? throw new Exception("data is null");
+            this.data = data.ToLower() ?? throw new DataIsNullException("data is null");
         }
         public string[] getNormalizedWords()
         {
