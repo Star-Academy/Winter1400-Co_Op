@@ -24,16 +24,15 @@ public class FileReaderTest
         var fileReader = new FileReader(foldersPath);
         var fileInfos = fileReader.getAddressOfFiles();
 
-        Assert.Equal(Resources.String1, fileReader.readDataFromFile(
-            fileInfos[0].FullName,fileInfos[0].Name));
+        Assert.Equal(Resources.String1, fileReader.ReadDataFromFile(
+            fileInfos[0].FullName));
     }
 
     [Fact]
     public void TestReadingFile2(){
         var fileReader = new FileReader(foldersPath);
         var falsePath = $"{foldersPath}/57111";
-        var falseName = "57111";
-        Assert.Null(fileReader.readDataFromFile(falsePath,falseName));
+        Assert.Null(fileReader.ReadDataFromFile(falsePath));
     }
 
      [Fact]
