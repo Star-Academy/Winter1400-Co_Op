@@ -11,15 +11,13 @@ namespace SampleLibrary.Test
         [Fact]
      public void TestProcessData(){
          string data = "I am looking for publically accessible sources of" + 
-             " data depicting braiand neuron functions.";
+             " data depicting braiand neuron functions";
          DocumentProcessor documentProcessor = new DocumentProcessor(data);
          string[] words = documentProcessor.getNormalizedWords();
          string[] expected = new string[]{"i","am","look","for",
              "public","access","sourc","of","data","depict","braiand",
              "neuron","function"};
-         for(int i = 0; i < expected.Length;i++){
-             Assert.Equal(expected[i],words[i]);
-         }
+        Assert.Equal(expected,words);
      }
      [Fact]
      public void TestPuttingWordsInHashMap(){
