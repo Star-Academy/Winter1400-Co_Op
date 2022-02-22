@@ -4,11 +4,11 @@ public class QueryManager
 {
     private HashSetOperators hashSetOperators = new HashSetOperators();
     private Queries query;
-    public string Query
+    public Queries Query
     {
         set
         {
-            query = new Queries(value);
+            query = value;
         }
     }
 

@@ -8,7 +8,7 @@ public class Controller
     {
         var dataOfFiles = ReadData(path);
         var indexes = GetIndexes(dataOfFiles);
-        var queryManager = new QueryManager(){Query = query};
+        var queryManager = new QueryManager(){Query = new Queries(query)};
 
         return queryManager.GetFileIdsMatchZeroAndPlusAndMinusQueries(indexes);
     }
