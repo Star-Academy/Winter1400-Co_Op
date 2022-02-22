@@ -54,21 +54,21 @@ public class QueriesTest
         var queries = new Queries
             ("one two three +four +five -six -seven -eight -nine");
         
-        var expectedZeroQueries = new List<string>();
-        expectedZeroQueries.Add("one");
-        expectedZeroQueries.Add("two");
-        expectedZeroQueries.Add("three");
-
-        var expectedPlusQueries = new List<string>();
-        expectedPlusQueries.Add("four");
-        expectedPlusQueries.Add("five");
-
-        var expectedMinusQueries = new List<string>();
-        expectedMinusQueries.Add("six");
-        expectedMinusQueries.Add("seven");
-        expectedMinusQueries.Add("eight");
-        expectedMinusQueries.Add("nine");
-
+        var expectedZeroQueries = new List<string>()
+        {
+            "one", "two", "three"
+        };
+        
+        var expectedPlusQueries = new List<string>()
+        {
+            "four","five"
+        };
+        
+        var expectedMinusQueries = new List<string>()
+        {
+            "six","seven","eight","nine"
+        };
+        
         Assert.Equal(queries.zeroQueries, expectedZeroQueries);
         Assert.Equal(queries.plusQueries, expectedPlusQueries);
         Assert.Equal(queries.minusQueries, expectedMinusQueries);

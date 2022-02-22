@@ -37,7 +37,7 @@ public class QueryManagerTest
 
     [Fact]
     public void TestZeroQueries1(){
-        queryManager.Query = "one";
+        queryManager.Query = new Queries("one");
 
         var expectedAnswer = new HashSet<int>(){1, 2, 3};
 
@@ -46,7 +46,7 @@ public class QueryManagerTest
 
     [Fact]
     public void TestZeroQueries2(){
-        queryManager.Query = "one four";
+        queryManager.Query = new Queries("one four");
 
         var expectedAnswer = new HashSet<int>(){1, 2};
 
@@ -55,7 +55,7 @@ public class QueryManagerTest
 
     [Fact]
     public void TestZeroAndMinusQueries1(){
-        queryManager.Query = "one -three";
+        queryManager.Query = new Queries("one -three");
 
         var expectedAnswer = new HashSet<int>(){1, 3};
 
@@ -64,7 +64,7 @@ public class QueryManagerTest
 
     [Fact]
     public void TestZeroQueries3(){
-        queryManager.Query = "two five";
+        queryManager.Query = new Queries("two five");
 
         var expectedAnswer = new HashSet<int>();
 
@@ -73,7 +73,7 @@ public class QueryManagerTest
 
     [Fact]
     public void TestPlusQueries(){
-        queryManager.Query = "+two +four";
+        queryManager.Query = new Queries("+two +four");
 
         var expectedAnswer = new HashSet<int>(){1, 2, 4, 5, 7};
 
@@ -82,7 +82,7 @@ public class QueryManagerTest
 
     [Fact]
     public void TestMinusAndPlusQueries(){
-        queryManager.Query = "+two -four";
+        queryManager.Query = new Queries("+two -four");
 
         var expectedAnswer = new HashSet<int>(){4, 5};
 
@@ -91,7 +91,7 @@ public class QueryManagerTest
 
     [Fact]
     public void TestZeroAndPlusQueries(){
-        queryManager.Query = "one two +four";
+        queryManager.Query = new Queries("one two +four");
 
         var expectedAnswer = new HashSet<int>(){1};
         

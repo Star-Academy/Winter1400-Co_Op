@@ -21,10 +21,10 @@ namespace SampleLibrary
         private Dictionary<string,string> readFiles(FileInfo[] fileInfos)
         {
             return fileInfos.Where(file=> file != null).
-                ToDictionary(file=> file.Name,file => readDataFromFile
-                (file.FullName,file.Name));
+                ToDictionary(file=> file.Name,file => ReadDataFromFile
+                (file.FullName));
         }
-        public string readDataFromFile(string path,string name)
+        public string ReadDataFromFile(string path)
         {
             try{
                 return File.ReadAllText(path);
