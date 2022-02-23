@@ -1,5 +1,5 @@
-﻿using library;
+﻿using console_app;
+using library;
 using library.controllers;
 
-new Controller().Run(studentsPath : "../../../../files/students.txt", 
-    scoresPath : "../../../../files/scores.txt", new ConsoleOutput());
+new Controller().Run(Resource1.StudentsPath, Resource1.ScoresPath, new ConsoleOutput());

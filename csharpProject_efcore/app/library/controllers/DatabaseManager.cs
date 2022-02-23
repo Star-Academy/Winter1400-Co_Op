@@ -17,7 +17,9 @@ namespace library.controllers
             context.SaveChanges();
         }
 
-        public List<string> Query()
+
+        
+        public List<(string, float)> QueryOnDatabase()
         {
             var context = new SchoolContext();
 
@@ -31,14 +33,14 @@ namespace library.controllers
                     StdName = $"{student.FirstName} {student.LastName}",
                     Score = grade.Score
                 }
-            ).GroupBy(x => x.StdID).Select(x => new
+            ).GroupBy(x => x.StdID).Select
+            (x => new
             {
                 name = x.First().StdName,
                 score = x.Average(p => p.Score)
             }).OrderByDescending(x => x.score).ToList()
-            .Take(3)
-            .Select(x => $"{x.name} {x.score}")
-            .ToList();
+            .Select(x => (x.name, x.score)).ToList();
+
         }
     }
 }

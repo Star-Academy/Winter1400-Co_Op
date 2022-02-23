@@ -5,7 +5,7 @@ using library.controllers;
 
 public class Controller : IController
 {
-        public void Run(string studentsPath, string scoresPath, IOutput output){
+    public void Run(string studentsPath, string scoresPath, IOutput output){
 
         var students = DeserializeJsonArrayFileByPath<Student>(studentsPath);
         
@@ -15,10 +15,18 @@ public class Controller : IController
 
         databaseManager.InitializeDatabase(students, grades);
 
-        output.OutputList(databaseManager.Query());
+        output.OutputList(GetSomeStudentsDataAsStrings(databaseManager.QueryOnDatabase(), 3));
     }
 
-    
+    private List<string> GetSomeStudentsDataAsStrings
+        (List<(string name, float score)> scores, int numberOfStudentsToGet)
+    {
+        return scores
+            .Take(numberOfStudentsToGet)
+            .Select(x => $"{x.name} {x.score}")
+            .ToList();
+    }
+
     private List<T> DeserializeJsonArrayFileByPath <T>( string path){
         
         var scoresFileReader = new FileReader() {path = path};
