@@ -5,26 +5,37 @@ using library.controllers;
 
 public class Controller : IController
 {
-    public void Run(string studentsPath, string scoresPath, IOutput output){
+    private readonly string _studentsPath;
+    private readonly string _scoresPath;
+    private readonly IOutput _output;
+    private readonly IDatabaseInitializer _databaseInitializer;
+    private readonly IDatabaseQuery _databaseQuery;
 
-        var students = DeserializeJsonArrayFileByPath<Student>(studentsPath);
-        
-        var grades = DeserializeJsonArrayFileByPath<Grade>(scoresPath);
 
-        var databaseManager = new DatabaseManager();
-
-        databaseManager.InitializeDatabase(students, grades);
-
-        output.OutputList(GetSomeStudentsDataAsStrings(databaseManager.QueryOnDatabase(), 3));
+    public Controller(string studentsPath, string scoresPath, IOutput output,
+        IDatabaseInitializer databaseInitializer, IDatabaseQuery databaseQuery)
+    {
+        _studentsPath = studentsPath;
+        _scoresPath = scoresPath;
+        _output = output;
+        _databaseInitializer = databaseInitializer;
+        _databaseQuery = databaseQuery;
     }
 
-    private List<string> GetSomeStudentsDataAsStrings
-        (List<(string name, float score)> scores, int numberOfStudentsToGet)
+    public void Run(){
+
+        initializeDatabase();
+
+        _output.OutputList(_databaseQuery.QueryOnDatabase());
+    }
+
+    private void initializeDatabase()
     {
-        return scores
-            .Take(numberOfStudentsToGet)
-            .Select(x => $"{x.name} {x.score}")
-            .ToList();
+        var students = DeserializeJsonArrayFileByPath<Student>(_studentsPath);
+
+        var grades = DeserializeJsonArrayFileByPath<Grade>(_scoresPath);
+
+        _databaseInitializer.InitializeDatabase(students, grades);
     }
 
     private List<T> DeserializeJsonArrayFileByPath <T>( string path){
@@ -34,8 +45,6 @@ public class Controller : IController
         
         return new JsonDeserializer<T>().DeserializeArray(scoresJsonData);
     }
-
-
 
 }
 
