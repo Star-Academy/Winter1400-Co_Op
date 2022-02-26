@@ -11,8 +11,11 @@ public class Controller : IController
     private readonly IDatabaseInitializer _databaseInitializer;
     private readonly IDatabaseQuery _databaseQuery;
 
-    public Controller(string studentsPath, string scoresPath, IOutput output,
-        IDatabaseInitializer databaseInitializer, IDatabaseQuery databaseQuery)
+    public Controller(string studentsPath,
+        string scoresPath, 
+        IOutput output,
+        IDatabaseInitializer databaseInitializer, 
+        IDatabaseQuery databaseQuery)
     {
         _studentsPath = studentsPath;
         _scoresPath = scoresPath;

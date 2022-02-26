@@ -17,8 +17,8 @@ namespace library.controllers
         {
             var context = new SchoolContext();
 
-            var extractedDataFromDatabase = context.Students.Join(
-                context.Grades,
+            var extractedDataFromDatabase = context.Students
+                .Join(context.Grades,
                 student => student.StudentNumber,
                 grade => grade.StudentNumber,
                 (student, grade) => new
@@ -27,13 +27,13 @@ namespace library.controllers
                     StdName = $"{student.FirstName} {student.LastName}",
                     Score = grade.Score
                 }
-            ).GroupBy(x => x.StdID).Select
-            (x => new
+            ).GroupBy(x => x.StdID).Select(x => new
             {
                 name = x.First().StdName,
                 score = x.Average(p => p.Score)
             }).OrderByDescending(x => x.score).ToList()
-            .Select(x => (x.name, x.score)).ToList();
+            .Select(x => (x.name, x.score))
+            .ToList();
 
             return GetSomeStudentsDataAsStrings(extractedDataFromDatabase);
         }
@@ -41,8 +41,7 @@ namespace library.controllers
         private List<string> GetSomeStudentsDataAsStrings
         (List<(string name, float score)> scores)
         {
-            return scores
-                .Take(_numberOfStudentsToGet)
+            return scores.Take(_numberOfStudentsToGet)
                 .Select(x => $"{x.name} {x.score}")
                 .ToList();
         }
