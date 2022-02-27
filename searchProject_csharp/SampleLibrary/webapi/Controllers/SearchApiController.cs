@@ -9,12 +9,10 @@ namespace webapi.Controllers
         private static readonly string _path = "../../files";
 
         [HttpGet("{query}")]
-        public IEnumerable<int> Get(string query)
+        public HashSet<int> Get(string query)
         {
-            foreach(var item in new SampleLibrary.Controller().Run(_path, query))
-            {
-                yield return item;
-            }
+            return new SampleLibrary.Controller().Run(_path, query);
+         
         }
     }
 }
